@@ -23,8 +23,15 @@ form fieldset input {
     margin: 0.2rem;
 }
 
-form fieldset button {
+form fieldset .btn {
     width: fit-content;
     margin-right: 0.4rem;
     margin-top: 0.4rem;
+}
+
+.feedback {
+    background-color: cadetblue;
+    border-radius: 0.4rem;
+    display: flex;
+    justify-content: center;
 }

@@ -1,3 +1,30 @@
+<?php 
+    if (isset($_GET["nombre"]) && $_GET["nombre"]!="") {
+        $nombre = $_GET["nombre"];
+        $telefono = $_GET["telefono"];
+        
+        include "agenda.php";
+        
+        if($telefono!=""){
+            $agenda[$nombre]=$telefono;
+        } else {
+            $agenda[$nombre]="";
+        }
+
+        foreach($agenda as $contacto=>$numero) {
+            echo $contacto.": ".$numero."<br>";
+        }
+    }
+
+    /*if($GET["limpiar"]==="1") {
+        $agenda=[];
+    } else {
+        foreach($agenda as $contacto=>$numero) {
+            echo $contacto.": ".$numero."<br>";
+        }
+    }*/
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,35 +36,11 @@
 <body>
     <h1>Agenda</h1>
     <section class="contenedor">
-
         <form action="" method="">
             <fieldset>
                 <legend>Datos Agenda</legend>
-                <?php 
-                    if (isset($_GET["nombre"]) && $_GET["nombre"]!="") {
-                        $nombre = $_GET["nombre"];
-                        $telefono = $_GET["telefono"];
-                        
-                        include "agenda.php";
-                        
-                        if($telefono!=""){
-                            $agenda[$nombre]=$telefono;
-                        } else {
-                            $agenda[$nombre]="";
-                        }
-    
-                        foreach($agenda as $contacto=>$numero) {
-                            echo $contacto.": ".$numero."<br>";
-                        }
-                    }
-
-                    /*if($GET["limpiar"]==="1") {
-                        $agenda=[];
-                    } else {
-                        foreach($agenda as $contacto=>$numero) {
-                            echo $contacto.": ".$numero."<br>";
-                        }
-                    }*/
+                <?php
+                
                 ?>
             </fieldset>
             <fieldset>
@@ -56,11 +59,6 @@
             </fieldset>
         </form>
         <form action="" method="GET">
-            <?php 
-                
-                
-
-            ?>
             <fieldset>
                 <legend>Vaciar Agenda</legend>
 

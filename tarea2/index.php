@@ -83,22 +83,21 @@ $agenda = $_SESSION['agenda'];
     </section>
     <section class="contenedor">
         <form action="" method="POST">
+            <?php if (!empty($agenda)) { ?>
             <fieldset>
-                <legend>Datos Agenda</legend>
+
+            <legend>Datos Agenda</legend>
+            
                 <ul>
-                    <?php
-                    if (!empty($agenda)) {
-                        foreach ($agenda as $nombre => $telefono) {
-                    ?>
+                <?php  foreach ($agenda as $nombre => $telefono) { ?>
+                        
+                        <li> <?php echo $nombre . ": " . $telefono; ?> </li>
 
-                            <li> <?php echo $nombre . ": " . $telefono; ?> </li>
-
-                    <?php
-                        }
-                    }
-                    ?>
-                </ul>
-            </fieldset>
+                <?php } ?>
+                </ul>  
+            </fieldset>  
+            <?php } ?>        
+            
             <fieldset>
                 <legend>Nuevo Contacto</legend>
 

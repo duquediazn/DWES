@@ -17,8 +17,8 @@ if (isset($_POST["nombre"])) {
     //Validación datos:
     if ($_POST["nombre"] == "") {
         $mensaje = "El nombre no puede estar vacío.";
-    } elseif (strlen($nombre) > 50) {
-        $mensaje = "El nombre no puede tener más de 50 caracteres.";
+    } elseif (strlen($nombre) < 3 && strlen($nombre) > 50) {
+        $mensaje = "El nombre debe tener entre 3 y 50 caracteres.";
     } elseif ($telefono != "" && !preg_match('/^(6|7)[0-9]{8}$/', $telefono)) {
         $mensaje = "El número de teléfono no es válido.";
     } else { //Datos válidos:
@@ -103,7 +103,7 @@ $agenda = $_SESSION['agenda'];
                 <legend>Nuevo Contacto</legend>
 
                 <label for="name">Nombre:
-                    <input type="text" name="nombre" id="name" maxlength="50" required>
+                    <input type="text" name="nombre" id="name" maxlength="50" minlength="3" required >
                 </label>
                 <br>
                 <label for="telefono">Teléfono:

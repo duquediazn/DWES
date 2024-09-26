@@ -17,7 +17,7 @@ if (isset($_POST["nombre"])) {
     //Validación datos:
     if ($_POST["nombre"] == "") {
         $mensaje = "El nombre no puede estar vacío.";
-    } elseif (strlen($nombre) < 3 && strlen($nombre) > 50) {
+    } elseif (strlen($nombre) < 3 || strlen($nombre) > 50) {
         $mensaje = "El nombre debe tener entre 3 y 50 caracteres.";
     } elseif ($telefono != "" && !preg_match('/^(6|7)[0-9]{8}$/', $telefono)) {
         $mensaje = "El número de teléfono no es válido.";
@@ -46,8 +46,8 @@ if (isset($_POST["nombre"])) {
         }
     }
 
-    // Redirección para evitar reenvío de formulario al recargar la página
-    header("Location: " . $_SERVER['PHP_SELF']);
+    //Redirección para evitar reenvío de formulario al recargar la página
+    //header("Location: " . $_SERVER['PHP_SELF']);
 }
 
 //Limpiar la agenda de contactos:
@@ -56,7 +56,7 @@ if (isset($_GET["limpiar"]) && $_GET["limpiar"] === "1") {
     $mensaje = "Todos los contactos han sido eliminados.";
 
     //Redirección para limpiar la query:
-    header("Location: " . $_SERVER['PHP_SELF']);
+    //header("Location: " . $_SERVER['PHP_SELF']);
 }
 
 $agenda = $_SESSION['agenda'];

@@ -107,6 +107,7 @@ $agenda = $_SESSION['agenda'];
                 </label>
                 <br>
                 <label for="telefono">Teléfono:
+                    <!-- pattern: teléfono válido en España-->
                     <input type="text" name="telefono" id="telefono" pattern="^(6|7)[0-9]{8}$">
                 </label>
                 <br>

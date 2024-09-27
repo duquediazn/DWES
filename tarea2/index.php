@@ -9,9 +9,22 @@ if (!isset($_SESSION['agenda'])) {
 // Inicializar mensaje vacío
 $mensaje = "";
 
+//Función para formatear el nombre introducido
+function formatearNombre(string $nombre): string
+{
+    //Elimina espacios al inicio y al final:
+    $nombre = trim($nombre);
+    //Reemplazar múltiples espacios con un único espacio:
+    $nombre = preg_replace('/\s+/', ' ', $nombre);
+    //Convierte a título, poniendo en mayúscula la primera letra de cada palabra:
+    $nombre = ucwords(strtolower($nombre));
+
+    return $nombre;
+}
+
 // Procesar el formulario al enviar
 if (isset($_POST["nombre"])) {
-    $nombre = trim($_POST["nombre"]);
+    $nombre = formatearNombre($_POST["nombre"]);
     $telefono = trim($_POST["telefono"]);
 
     //Validación datos:
@@ -84,25 +97,25 @@ $agenda = $_SESSION['agenda'];
     <section class="contenedor">
         <form action="" method="POST">
             <?php if (!empty($agenda)) { ?>
-            <fieldset>
+                <fieldset>
 
-            <legend>Datos Agenda</legend>
-            
-                <ul>
-                <?php  foreach ($agenda as $nombre => $telefono) { ?>
-                        
-                        <li> <?php echo $nombre . ": " . $telefono; ?> </li>
+                    <legend>Datos Agenda</legend>
 
-                <?php } ?>
-                </ul>  
-            </fieldset>  
-            <?php } ?>        
-            
+                    <ul>
+                        <?php foreach ($agenda as $nombre => $telefono) { ?>
+
+                            <li> <?php echo $nombre . ": " . $telefono; ?> </li>
+
+                        <?php } ?>
+                    </ul>
+                </fieldset>
+            <?php } ?>
+
             <fieldset>
                 <legend>Nuevo Contacto</legend>
 
                 <label for="name">Nombre:
-                    <input type="text" name="nombre" id="name" maxlength="50" minlength="3" required >
+                    <input type="text" name="nombre" id="name" maxlength="50" minlength="3" required>
                 </label>
                 <br>
                 <label for="telefono">Teléfono:

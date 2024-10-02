@@ -1,5 +1,11 @@
 <?php
     require_once "conexion.php";
+
+    $mensaje="";
+
+    $consulta=$conexionProyecto->query("SELECT id, nombre FROM productos");
+    $registros = $consulta->fetchAll(PDO::FETCH_ASSOC);
+    $consulta=null;//Cerramos conexión
 ?>
 
 <!DOCTYPE html>
@@ -14,28 +20,36 @@
 <body>
     <div class="container">
     <h1 class="text-center">Gestión de productos</h1>
-
-<div class="container container-md">
-    <table class="table table-dark table-striped table-hover align-middle">
-        <thead>
-            <tr class="table-dark">
-                <th>Detalle</th>
-                <th>Código</th>
-                <th>Nombre</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="table-dark">
-                <td>Detalle</td>
-                <td>1</td>
-                <td>Nombre del rollo</td>
-                <td>Botones</td>
-            </tr>
-        </tbody>
-    </table>
-</div> 
+    <div class="container">
+        <p>
+            <?php echo $mensaje; ?>
+        </p>
     </div>
+    <div class="container container-md">
+        <table class="table table-dark table-striped table-hover align-middle">
+            <thead>
+                <tr class="table-dark">
+                    <th>Detalle</th>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                    foreach ($registros as $row) {
+                        echo '
+                        <tr class="table-dark">
+                            <td>Detalle</td>
+                            <td>'.$row["id"].'</td>
+                            <td>'.$row["nombre"].'</td>
+                            <td>Botones</td>
+                        </tr>';
+                    }
+                ?>
+            </tbody>
+        </table>
+    </div> 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

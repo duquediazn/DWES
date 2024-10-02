@@ -11,40 +11,91 @@
 
     //Envío del formulario: creación de un registro
     if($_SERVER["REQUEST_METHOD"] == "POST"){
-        $nombre=trim($_POST["nombre"]);
-        $nombre_corto=trim($_POST["nombre-corto"]);
-        $precio=$_POST["precio"];
-        $familia=$_POST["familia"];
-        $descripcion=$_POST["descripcion"];
 
-        try{
-            //Insert preparado
-            $consulta=$conexionProyecto->prepare('INSERT INTO productos (nombre, nombre_corto, descripcion, pvp, familia) 
-            VALUES (:nombre, :nombre_corto, :descripcion, :precio, :familia)');
+        //Validación de datos y seguridad
+        $errores = []; // Inicializamos un array para almacenar mensajes de error
 
-            $consulta->bindParam(":nombre", $nombre);
-            $consulta->bindParam(":nombre_corto", $nombre_corto);
-            $consulta->bindParam(":descripcion", $descripcion);
-            $consulta->bindParam(":precio", $precio);
-            $consulta->bindParam(":familia", $familia);
-
-            $consulta->execute(); //Ejecución del insert
-            
-            $mensaje='
-                <div class="alert alert-success container container-md mb-2"> 
-                    Producto registrado correctamente.
-                </div>';         
-
-        } catch (PDOException $e){
-            $mensaje = '
-                <div class="alert alert-danger container container-md mb-2"> 
-                    Error: '.$e->getMEssage().' 
-                </div>';
-            $mensaje .= '
-                <div class="alert alert-warning container container-md mb-2"> 
-                    El producto no se ha podido registrar. 
-                </div>';
+        // Validar el campo "nombre"
+        if (empty($_POST['nombre'])) {
+            $errores['nombre'] = "El nombre es obligatorio.";
+        } else {
+            $nombre = htmlspecialchars(trim($_POST["nombre"]));
         }
+
+        // Validar el campo "nombre-corto"
+        if (empty($_POST['nombre-corto'])) {
+            $errores['nombre-corto'] = "El nombre corto es obligatorio.";
+        } else {
+            $nombre_corto = htmlspecialchars(strtoupper(trim($_POST["nombre-corto"])));
+            // Validar que solo contenga mayúsculas y números
+            if (!preg_match('/^[A-Z0-9]+$/', $nombre_corto)) {
+                $errores['nombre-corto'] = "El nombre corto solo debe contener mayúsculas y números.";
+            }
+        }
+
+        // Validar el campo "precio"
+        if (empty($_POST['precio'])) {
+            $errores['precio'] = "El precio es obligatorio.";
+        } else {
+            $precio = trim($_POST['precio']);
+            // Validar que sea un número decimal válido con hasta dos decimales
+            if (!preg_match('/^\d+(\.\d{1,2})?$/', $precio)) {
+                $errores['precio'] = "Introduce un número válido (hasta dos decimales).";
+            }
+        }
+
+        // Validar el campo "familia"
+        if (empty($_POST['familia'])) {
+            $errores['familia'] = "La familia es obligatoria.";
+        } else {
+            $familia = htmlspecialchars(trim($_POST["familia"]));
+        }
+
+        // Validar el campo "descripcion" (opcional)
+        if (isset($_POST['descripcion'])) {
+            $descripcion = htmlspecialchars(trim($_POST["descripcion"]));
+        }
+
+        // Procesar el formulario si no hay errores
+        if (empty($errores)) {
+            try{
+                //Preparamos insert
+                $consulta=$conexionProyecto->prepare('INSERT INTO productos (nombre, nombre_corto, descripcion, pvp, familia) 
+                VALUES (:nombre, :nombre_corto, :descripcion, :precio, :familia)');
+    
+                $consulta->bindParam(":nombre", $nombre);
+                $consulta->bindParam(":nombre_corto", $nombre_corto);
+                $consulta->bindParam(":descripcion", $descripcion);
+                $consulta->bindParam(":precio", $precio);
+                $consulta->bindParam(":familia", $familia);
+    
+                $consulta->execute(); //Ejecución del insert
+                
+                $mensaje="
+                    <div class='alert alert-success container container-md mb-2'>
+                        Producto registrado correctamente.
+                    </div>";         
+    
+            } catch (PDOException $e){
+                $mensaje = '
+                    <div class="alert alert-danger container container-md mb-2"> 
+                        Error: '.$e->getMessage().' 
+                    </div>';
+                $mensaje .= '
+                    <div class="alert alert-warning container container-md mb-2"> 
+                        El producto no se ha podido registrar. 
+                    </div>';
+            }
+        } else {
+            // Mostrar errores
+            foreach ($errores as $campo => $error) {
+                $mensaje .= "
+                    <div class='alert alert-warning container container-md mb-2'>
+                        $error
+                    </div>";
+            }
+        }
+
     }
 
     $consulta=null;//Cerramos conexión
@@ -64,17 +115,20 @@
         <div class="row">
             <div class="col">
                 <label class="mb-2" for="nombre">Nombre</label>
-                <input class="form-control mb-2" type="text" name="nombre" id="nombre" placeholder="Nombre" required>
+                <input class="form-control mb-2" type="text" name="nombre" id="nombre" placeholder="Nombre" required
+                title="Introduzca el nombre del producto." maxlength="200">
             </div>
             <div class="col">
                 <label class="mb-2" for="nombre-corto">Nombre corto</label>
-                <input class="form-control mb-2" type="text" name="nombre-corto" id="nombre-corto" placeholder="Nombre Corto" required>
+                <input class="form-control mb-2" type="text" name="nombre-corto" id="nombre-corto" placeholder="Nombre Corto" required
+                pattern="^[A-Z0-9]+$" title="Introduzca el nombre corto del producto, sólo mayúsculas y números" maxlength="50">
             </div>
         </div>
         <div class="row">
             <div class="col">
                 <label class="mb-2" for="precio">Precio (€)</label>
-                <input class="form-control mb-2" type="text" name="precio" id="precio" placeholder="Precio (€)" required>
+                <input class="form-control mb-2" type="text" name="precio" id="precio" placeholder="Precio (€)" required 
+                pattern="^\d+(\.\d{1,2})?$" title="Introduce un número válido (hasta dos decimales)">
             </div>
             <div class="col">
                 <label class="mb-2" for="familia">Familia</label>
@@ -92,7 +146,8 @@
             </div>
         </div>
         <label class="mb-2" for="descripcion">Descripción</label>
-        <textarea class="form-control mb-2" name="descripcion" id="descripcion"></textarea>
+        <textarea class="form-control mb-2" name="descripcion" id="descripcion"
+        title="Descripción del producto (opcional)"></textarea>
 
         <input class="btn btn-primary me-2 mt-2" type="submit" value="Crear">
 

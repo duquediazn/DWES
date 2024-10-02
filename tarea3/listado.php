@@ -1,8 +1,6 @@
 <?php
     require_once "conexion.php";
 
-    $mensaje="";
-
     $consulta=$conexionProyecto->query("SELECT id, nombre FROM productos");
     $registros = $consulta->fetchAll(PDO::FETCH_ASSOC);
     $consulta=null;//Cerramos conexión
@@ -17,22 +15,19 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
 </head>
-<body>
-    <div class="container">
-    <h1 class="text-center">Gestión de productos</h1>
-    <div class="container">
-        <p>
-            <?php echo $mensaje; ?>
-        </p>
-    </div>
+<body class="bg-info">
+    <h1 class="text-center mt-4">Gestión de productos</h1>
+
     <div class="container container-md">
+        <a class="btn btn-success mb-2" href="crear.php">Crear</a>
+
         <table class="table table-dark table-striped table-hover align-middle">
             <thead>
                 <tr class="table-dark">
-                    <th>Detalle</th>
-                    <th>Código</th>
-                    <th>Nombre</th>
-                    <th>Acciones</th>
+                    <th class="text-center">Detalle</th>
+                    <th class="text-center">Código</th>
+                    <th class="text-center">Nombre</th>
+                    <th class="text-center">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -40,10 +35,16 @@
                     foreach ($registros as $row) {
                         echo '
                         <tr class="table-dark">
-                            <td>Detalle</td>
-                            <td>'.$row["id"].'</td>
-                            <td>'.$row["nombre"].'</td>
-                            <td>Botones</td>
+                            <td class="text-center"><a class="btn btn-primary" href="detalle.php?id='.$row["id"].'">Detalle</a></td>
+                            <td class="text-center">'.$row["id"].'</td>
+                            <td class="text-center">'.$row["nombre"].'</td>
+                            <td class="text-center">
+                                <form action="borrar.php" method="POST">
+                                    <a class="btn btn-warning" href="update.php?id='.$row["id"].'">Actualizar</a>
+                                    <input type="hidden" name="id" value="'.$row["id"].'">
+                                    <input class="btn btn-danger" type="submit" value="Borrar">
+                                </form>
+                            </td>
                         </tr>';
                     }
                 ?>

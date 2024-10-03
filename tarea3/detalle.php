@@ -7,7 +7,9 @@ if (isset($_GET["id"])) {
     $consulta = $conexionProyecto->query("SELECT id, nombre, nombre_corto, descripcion, pvp, familia FROM productos
     WHERE id = $id");
 
-    $registro = $consulta->fetch();
+    if (!$registro = $consulta->fetch()) {
+        header('Location:listado.php');
+    }
 }
 
 require_once "inc/header.php";

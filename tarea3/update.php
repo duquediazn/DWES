@@ -9,11 +9,13 @@ if (isset($_GET["id"])) {
     $consulta = $conexionProyecto->query("SELECT id, nombre, nombre_corto, descripcion, pvp, familia FROM productos
     WHERE id = $id");
 
-    $registro_productos = $consulta->fetch();
+    if ($registro_productos = $consulta->fetch()) {
+        $consulta = $conexionProyecto->query("SELECT cod, nombre FROM familias");
 
-    $consulta = $conexionProyecto->query("SELECT cod, nombre FROM familias");
-
-    $registros_familias = $consulta->fetchAll();
+        $registros_familias = $consulta->fetchAll();
+    } else {
+        header('Location:listado.php');
+    }
 }
 
 //Envío del formulario: creación de un registro

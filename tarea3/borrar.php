@@ -20,7 +20,7 @@ if ($_POST["id"]) {
 
             $mensaje = "
                     <div class='alert alert-success container container-md mb-2'>
-                        Producto borrado correctamente.
+                        Producto de código ".$registro['id']." borrado correctamente.
                     </div>";
         } catch (PDOException $e) {
             $mensaje = '

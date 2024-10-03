@@ -3,23 +3,31 @@ require_once "php/conexion.php";
 
 include_once "inc/header.php";
 
-if (isset($_GET["id"])) {
-    $id = $_GET["id"];
-
-    $consulta = $conexionProyecto->query("SELECT id, nombre, nombre_corto, descripcion, pvp, familia FROM productos
-    WHERE id = $id");
-
-    if ($registro_productos = $consulta->fetch()) {
-        $consulta = $conexionProyecto->query("SELECT cod, nombre FROM familias");
-
-        $registros_familias = $consulta->fetchAll();
-    }
-} else {
-    header('Location:listado.php');
-}
-
 $mensaje = "";
 
+if (isset($_GET["id"])) {
+    $id = $_GET["id"];
+    
+    try {
+        $consulta = $conexionProyecto->query("SELECT id, nombre, nombre_corto, descripcion, pvp, familia FROM productos
+        WHERE id = $id");
+    
+        if ($registro_productos = $consulta->fetch()) {
+            $consulta = $conexionProyecto->query("SELECT cod, nombre FROM familias");
+    
+            $registros_familias = $consulta->fetchAll();
+        } else {
+            header('Location:listado.php');
+        }
+        
+    } catch(PDOException $e) {
+        $mensaje = '
+            <div class="alert alert-danger container container-md mb-2"> 
+                Error: ' . $e->getMessage() . ' 
+            </div>';
+    }
+    
+} 
 //Envío del formulario: creación de un registro
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 

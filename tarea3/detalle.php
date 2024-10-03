@@ -1,14 +1,23 @@
 <?php
 require_once "php/conexion.php";
 
+$mensaje = "";
+
 if (isset($_GET["id"])) {
     $id = $_GET["id"];
 
-    $consulta = $conexionProyecto->query("SELECT id, nombre, nombre_corto, descripcion, pvp, familia FROM productos
-    WHERE id = $id");
+    try {
+        $consulta = $conexionProyecto->query("SELECT id, nombre, nombre_corto, descripcion, pvp, familia FROM productos
+        WHERE id = $id");
 
-    if (!$registro = $consulta->fetch()) {
-        header('Location:listado.php');
+        if (!$registro = $consulta->fetch()) {
+            header('Location:listado.php');
+        }
+    } catch(PDOException $e) {
+        $mensaje = '
+            <div class="alert alert-danger container container-md mb-2"> 
+                Error: ' . $e->getMessage() . ' 
+            </div>';
     }
 }
 
@@ -16,6 +25,13 @@ include_once "inc/header.php";
 ?>
 
 <h1 class="text-center mt-4 mb-2">Detalle Producto</h1>
+
+<?php
+// Mensaje de feedback al usuario
+if (!empty($mensaje)) {
+    echo $mensaje;
+}
+?>
 
 <div class="container mt-4" style="width: 50%;">
     <div class="card bg-primary bg-opacity-50 text-white">

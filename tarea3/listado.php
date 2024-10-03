@@ -1,16 +1,32 @@
 <?php
 require_once "php/conexion.php";
 
-//Consulta para rellenar la tabla con la lista de productos
-$consulta = $conexionProyecto->query("SELECT id, nombre FROM productos");
+$mensaje="";
 
-//Volcado de datos en array $registros
-$registros = $consulta->fetchAll(PDO::FETCH_ASSOC);
-$consulta = null; //Cerramos conexión
+try {
+    //Consulta para rellenar la tabla con la lista de productos
+    $consulta = $conexionProyecto->query("SELECT id, nombre FROM productos");
+
+    //Volcado de datos en array $registros
+    $registros = $consulta->fetchAll(PDO::FETCH_ASSOC);
+    $consulta = null; //Cerramos conexión
+
+} catch(PDOException $e) {
+    $mensaje = '
+        <div class="alert alert-danger container container-md mb-2"> 
+            Error: ' . $e->getMessage() . ' 
+        </div>';
+}
 
 include_once "inc/header.php";
 ?>
 <h1 class="text-center mt-4">Gestión de productos</h1>
+
+<?php 
+    if(!$mensaje) {
+        echo $mensaje;
+    }
+?>
 
 <div class="container container-md">
     <a class="btn btn-success mb-2" href="crear.php">Crear</a>

@@ -1,16 +1,21 @@
 <?php
 require_once "php/conexion.php";
-
 include_once "inc/header.php";
 
-//Consulta para rellenar el select del formulario
-$consulta = $conexionProyecto->query("SELECT cod, nombre FROM familias");
-
-//Volcado de datos en array registros
-$registros = $consulta->fetchAll(PDO::FETCH_ASSOC);
-
-
 $mensaje = "";
+
+try {
+    //Consulta para rellenar el select del formulario
+    $consulta = $conexionProyecto->query("SELECT cod, nombre FROM familias");
+
+    //Volcado de datos en array registros
+    $registros = $consulta->fetchAll(PDO::FETCH_ASSOC);
+} catch(PDOException $e) {
+    $mensaje = '
+        <div class="alert alert-danger container container-md mb-2"> 
+            Error: ' . $e->getMessage() . ' 
+        </div>';
+}
 
 //Envío del formulario: creación de un registro
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

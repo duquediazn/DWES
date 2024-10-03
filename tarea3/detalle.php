@@ -1,5 +1,5 @@
 <?php
-require_once "conexion.php";
+require_once "php/conexion.php";
 
 if (isset($_GET["id"])) {
     $id = $_GET["id"];
@@ -12,7 +12,7 @@ if (isset($_GET["id"])) {
     }
 }
 
-require_once "inc/header.php";
+include_once "inc/header.php";
 ?>
 
 <h1 class="text-center mt-4 mb-2">Detalle Producto</h1>
@@ -38,5 +38,5 @@ require_once "inc/header.php";
 </div>
 
 <?php
-require_once "inc/footer.php";
+include_once "inc/footer.php";
 ?>

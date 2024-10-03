@@ -1,7 +1,7 @@
 <?php
-require_once "conexion.php";
+require_once "php/conexion.php";
 
-$mendaje = "";
+$mensaje = "";
 
 if ($_POST["id"]) {
     $id = $_POST["id"];

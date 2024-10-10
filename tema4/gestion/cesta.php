@@ -4,7 +4,6 @@ if (!isset($_SESSION['nombre'])) {
     header('Location:login.php');
 }
 require_once 'conexion.php';
-
 /*
 Comprobamos que existe la
 variable $_SESSION['nombre'], redireccionándonos a login si no es así. Hacemos el
@@ -13,7 +12,6 @@ require_once de conexión y recorriendo los valores del array $_SESSION['cesta']
 array con el nombre y el precio de los mismos. Para ello utilizamos la función
 recuperarProducto($id) de "conexión.php".
 */
-
 if (isset($_SESSION['cesta'])) {
     foreach ($_SESSION['cesta'] as $k => $v) {
         $producto = consultarProducto($k);

@@ -2,13 +2,7 @@
     //Si no .htaccess
     if ($_SERVER['PHP_AUTH_USER']!='gestor' || $_SERVER['PHP_AUTH_PW']!='secreto') {
         header('WWW-Authenticate: Basic Realm="Contenido restringido"');
-        /*Envía una cabecera HTTP que solicita la autenticación básica. 
-        El "Realm" especifica el ámbito de la autenticación, 
-        que en este caso es "Contenido restringido". 
-        Esto indica al navegador que debe pedir al usuario un nombre de usuario y una contraseña.*/
         header('HTTP/1.0 401 Unauthorized');
-        /*Envía una respuesta HTTP con el código de estado 401, que significa "No autorizado". 
-        Esto indica que el acceso al recurso está prohibido porque no se proporcionaron credenciales válidas.*/
         echo "Usuario no reconocido!";
         exit;
     }

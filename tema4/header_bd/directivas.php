@@ -45,8 +45,25 @@ if ($stmt->rowCount() == 0) {
 }
 $stmt = null;
 $conProyecto = null;
-?>
 
+//COOKIES
+//Para poner el formato fecha en castellano y recuperar fecha y hora de acceso
+setlocale(LC_ALL, 'es_ES.UTF-8');
+date_default_timezone_set('Europe/Madrid');
+$ahora = new DateTime();
+$fecha = strftime("Tu última visita fué el %A, %d de %B de %Y a las %H:%M:%S", date_timestamp_get($ahora));
+
+// si existe la cookie recupero su valor
+if (isset($_COOKIE[$_SERVER['PHP_AUTH_USER']])) {
+    $mensaje = $_COOKIE[$_SERVER['PHP_AUTH_USER']];
+} //si no existe es la primera visita para este usuario
+else {
+    $mensaje = "Es la primera vez que visitas la página.";
+}
+
+//Creo o actualizo la cookie con la nueva fecha de acceso, la cookie durará una semana
+setcookie($_SERVER['PHP_AUTH_USER'], "$fecha", time() + 7 * 24 * 60 * 60, '/');
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -60,6 +77,11 @@ integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9If
 </head>
 
 <body style="background:gainsboro">
+
+<p class="float-left m-3">
+ <?php echo $mensaje; ?>
+</p>
+<br><br>
 <h4 class="mt-3 text-center font-weight-bold">Solución Ejercicio</h4>
 <div class='container mt-3'>
     <div class='row'>

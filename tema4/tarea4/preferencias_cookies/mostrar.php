@@ -1,22 +1,32 @@
 <?php
 session_start();
-
 // Borrar preferencias
 if (isset($_POST['borrar'])) {
-    if (empty($_SESSION)) {
-        $mensaje = "Debes fijar primero las preferencias.";
+    if (empty($_COOKIE["idioma"]) && empty($_COOKIE["perfil_publico"]) && empty($_COOKIE["zona_horaria"])) {
+        $_SESSION['mensaje'] = "Debes fijar primero las preferencias.";
     } else {
-        session_unset();
-        $mensaje = "Preferencias borradas.";
+        setcookie("idioma", "", time() - 36000, "/");
+        setcookie("perfil_publico", "", time() - 3600, "/");
+        setcookie("zona_horaria", "", time() - 3600, "/");
+        $_SESSION['mensaje'] = "Preferencias borradas.";
+
+        // Redirigir para que los cambios surtan efecto en la siguiente petición
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit();
     }
 }
 
-// Aquí se definen los valores predeterminados
-$idioma = isset($_SESSION['idioma']) ? $_SESSION['idioma'] : "No establecido";
-$perfil_publico = isset($_SESSION['perfil_publico']) ? $_SESSION['perfil_publico'] : "No establecido";
-$zona_horaria = isset($_SESSION['zona_horaria']) ? $_SESSION['zona_horaria'] : "No establecido";
+if (isset($_SESSION['mensaje'])) {
+    $mensaje = $_SESSION['mensaje'];
+    unset($_SESSION['mensaje']); // Eliminar el mensaje de la sesión para que no se muestre nuevamente
+}
+
+// Definir valores predeterminados
+$idioma = isset($_COOKIE['idioma']) ? $_COOKIE['idioma'] : "No establecido";
+$perfil_publico = isset($_COOKIE['perfil_publico']) ? $_COOKIE['perfil_publico'] : "No establecido";
+$zona_horaria = isset($_COOKIE['zona_horaria']) ? $_COOKIE['zona_horaria'] : "No establecido";
 ?>
-<!--Vista-->
+
 <!DOCTYPE html>
 <html lang="es">
 

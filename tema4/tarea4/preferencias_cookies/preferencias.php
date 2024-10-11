@@ -1,20 +1,27 @@
 <?php
-session_start(); //Se inicia sesión, creación de la cookie: PHPSESSID
-
-// Se guardan las preferencias en la sesión
+session_start();
+// Guardar las preferencias en la sesión
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $_SESSION['idioma'] = $_POST['idioma'];
-    $_SESSION['perfil_publico'] = $_POST['perfil_publico'];
-    $_SESSION['zona_horaria'] = $_POST['zona_horaria'];
-    $mensaje = "Preferencias de usuario guardadas.";
+    setcookie("idioma", $_POST['idioma'], time() + 3600, "/");
+    setcookie("perfil_publico", $_POST['perfil_publico'], time() + 3600, "/");
+    setcookie("zona_horaria", $_POST['zona_horaria'], time() + 3600, "/");
+    $_SESSION['mensaje'] = "Preferencias de usuario guardadas.";
+
+    // Redirigir para cargar la cookie en la nueva solicitud
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit();  // Salimos para que deje de ejecutarse el script.
 }
 
-// Aquí se definen los valores predeterminados
-$idioma = isset($_SESSION['idioma']) ? $_SESSION['idioma'] : "";
-$perfil_publico = isset($_SESSION['perfil_publico']) ? $_SESSION['perfil_publico'] : "";
-$zona_horaria = isset($_SESSION['zona_horaria']) ? $_SESSION['zona_horaria'] : "";
+if (isset($_SESSION['mensaje'])) {
+    $mensaje = $_SESSION['mensaje'];
+    unset($_SESSION['mensaje']); // Eliminar el mensaje de la sesión para que no se muestre nuevamente
+}
+
+// Definir valores predeterminados
+$idioma = isset($_COOKIE['idioma']) ? $_COOKIE['idioma'] : "";
+$perfil_publico = isset($_COOKIE['perfil_publico']) ? $_COOKIE['perfil_publico'] : "";
+$zona_horaria = isset($_COOKIE['zona_horaria']) ? $_COOKIE['zona_horaria'] : "";
 ?>
-<!--Vista-->
 <!DOCTYPE html>
 <html lang="es">
 

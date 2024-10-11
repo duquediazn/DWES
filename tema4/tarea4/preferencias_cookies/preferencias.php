@@ -62,8 +62,8 @@ $zona_horaria = isset($_COOKIE['zona_horaria']) ? $_COOKIE['zona_horaria'] : "";
                                     </span>
                                 </div>
                                 <select class="form-select form-control" name="idioma" id="idioma">
-                                    <option value="es" <?php if ($idioma == "es") echo "selected" ?>>Español</option>
-                                    <option value="en" <?php if ($idioma == "en") echo "selected" ?>>English</option>
+                                    <option value="Español" <?php if ($idioma == "Español") echo "selected" ?>>Español</option>
+                                    <option value="Inglés" <?php if ($idioma == "Inglés") echo "selected" ?>>Inglés</option>
                                 </select>
                             </div>
                             <label for="perfil_publico" class="form-label">Perfil público</label>
@@ -74,8 +74,8 @@ $zona_horaria = isset($_COOKIE['zona_horaria']) ? $_COOKIE['zona_horaria'] : "";
                                     </span>
                                 </div>
                                 <select class="form-select form-control" name="perfil_publico" id="perfil_publico">
-                                    <option value="si" <?php if ($perfil_publico == "si") echo "selected" ?>>Sí</option>
-                                    <option value="no" <?php if ($perfil_publico == "no") echo "selected" ?>>No</option>
+                                    <option value="Sí" <?php if ($perfil_publico == "Sí") echo "selected" ?>>Sí</option>
+                                    <option value="No" <?php if ($perfil_publico == "No") echo "selected" ?>>No</option>
                                 </select>
                             </div>
                             <label for="zona_horaria" class="form-label">Zona Horaria</label>
@@ -86,11 +86,11 @@ $zona_horaria = isset($_COOKIE['zona_horaria']) ? $_COOKIE['zona_horaria'] : "";
                                     </span>
                                 </div>
                                 <select class="form-select form-control" name="zona_horaria" id="zona_horaria">
-                                    <option value="gmt-2" <?php if ($zona_horaria == "gmt-2") echo "selected" ?>>GMT-2</option>
-                                    <option value="gmt-1" <?php if ($zona_horaria == "gmt-1") echo "selected" ?>>GMT-1</option>
-                                    <option value="gmt" <?php if ($zona_horaria == "gmt") echo "selected" ?>>GMT</option>
-                                    <option value="gmt+1" <?php if ($zona_horaria == "gmt+1") echo "selected" ?>>GMT+1</option>
-                                    <option value="gmt+2" <?php if ($zona_horaria == "gmt+2") echo "selected" ?>>GMT+2</option>
+                                    <option value="GMT-2" <?php if ($zona_horaria == "GMT-2") echo "selected" ?>>GMT-2</option>
+                                    <option value="GMT-1" <?php if ($zona_horaria == "GMT-1") echo "selected" ?>>GMT-1</option>
+                                    <option value="GMT" <?php if ($zona_horaria == "GMT") echo "selected" ?>>GMT</option>
+                                    <option value="GMT+1" <?php if ($zona_horaria == "GMT+1") echo "selected" ?>>GMT+1</option>
+                                    <option value="GMT+2" <?php if ($zona_horaria == "GMT+2") echo "selected" ?>>GMT+2</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -106,5 +106,4 @@ $zona_horaria = isset($_COOKIE['zona_horaria']) ? $_COOKIE['zona_horaria'] : "";
         </div>
     </div>
 </body>
-
 </html>

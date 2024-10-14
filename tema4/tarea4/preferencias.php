@@ -87,10 +87,10 @@ $zona_horaria = isset($_SESSION['zona_horaria']) ? $_SESSION['zona_horaria'] : "
                                 </select>
                             </div>
                             <div class="form-group">
-                                <input type="submit" value="Establecer Preferencias" class="btn float-left btn-primary">
+                                <a class="btn float-left btn-primary" href="mostrar.php">Mostrar Preferencias</a>
                             </div>
                             <div class="form-group">
-                                <a class="btn float-right btn-success" href="mostrar.php">Mostrar Preferencias</a>
+                                <input type="submit" value="Establecer Preferencias" class="btn float-right btn-success">
                             </div>
                         </form>
                     </div>

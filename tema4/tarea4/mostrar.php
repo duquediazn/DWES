@@ -1,12 +1,19 @@
 <?php
 session_start();
 
+if (!isset($_SESSION['usuario'])) {
+    header('Location: login.php');
+    exit();
+}
+
 // Borrar preferencias
 if (isset($_POST['borrar'])) {
-    if (empty($_SESSION)) {
+    if (empty($_SESSION['idioma']) || empty($_SESSION['idioma']) || empty($_SESSION['idioma'])) {
         $mensaje = "Debes fijar primero las preferencias.";
     } else {
-        session_unset();
+        unset($_SESSION['idioma']);
+        unset($_SESSION['perfil_publico']);
+        unset($_SESSION['zona_horaria']);
         $mensaje = "Preferencias borradas.";
     }
 }
@@ -33,6 +40,13 @@ $zona_horaria = isset($_SESSION['zona_horaria']) ? $_SESSION['zona_horaria'] : "
 </head>
 
 <body style="background:silver;">
+
+    <div class="float float-right d-inline-flex mt-4 mr-4">
+        <i class="fas fa-user mr-3 fa-2x"></i>
+        Bienvenido/a <?php echo $_SESSION['usuario']; ?>
+        <a href="logout.php" class="btn btn-warning ml-2">Salir</a>
+    </div>
+    <br>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">

@@ -1,5 +1,10 @@
 <?php
-session_start(); //Se inicia sesión, creación de la cookie: PHPSESSID
+session_start(); 
+
+if (!isset($_SESSION['usuario'])) { //Redirección, acceso restringido.
+    header('Location: login.php');
+    exit();
+}
 
 // Se guardan las preferencias en la sesión
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -31,6 +36,13 @@ $zona_horaria = isset($_SESSION['zona_horaria']) ? $_SESSION['zona_horaria'] : "
 </head>
 
 <body style="background:silver;">
+
+    <div class="float float-right d-inline-flex mt-4 mr-4">
+        <i class="fas fa-user mr-3 fa-2x"></i>
+        Bienvenido/a <?php echo $_SESSION['usuario']; ?>
+        <a href="logout.php" class="btn btn-warning ml-2">Salir</a>
+    </div>
+    <br>
     <div class="container mt-5">
         <div class="d-flex justify-content-center h-100">
             <div class="col-md-6">

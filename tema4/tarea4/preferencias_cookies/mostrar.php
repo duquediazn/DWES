@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['usuario'])) {
+    header('Location: login.php');
+    exit();
+}
 // Borrar preferencias
 if (isset($_POST['borrar'])) {
     if (empty($_COOKIE["idioma"]) && empty($_COOKIE["perfil_publico"]) && empty($_COOKIE["zona_horaria"])) {
@@ -20,7 +25,6 @@ if (isset($_SESSION['mensaje'])) {
     $mensaje = $_SESSION['mensaje'];
     unset($_SESSION['mensaje']); // Eliminar el mensaje de la sesión para que no se muestre nuevamente
 }
-
 // Definir valores predeterminados
 $idioma = isset($_COOKIE['idioma']) ? $_COOKIE['idioma'] : "No establecido";
 $perfil_publico = isset($_COOKIE['perfil_publico']) ? $_COOKIE['perfil_publico'] : "No establecido";
@@ -43,6 +47,13 @@ $zona_horaria = isset($_COOKIE['zona_horaria']) ? $_COOKIE['zona_horaria'] : "No
 </head>
 
 <body style="background:silver;">
+
+    <div class="float float-right d-inline-flex mt-4 mr-4">
+        <i class="fas fa-user mr-3 fa-2x"></i>
+        Bienvenido/a <?php echo $_SESSION['usuario']; ?>
+        <a href="logout.php" class="btn btn-warning ml-2">Salir</a>
+    </div>
+    <br>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">

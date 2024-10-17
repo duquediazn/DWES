@@ -2,21 +2,20 @@
 session_start();
 require '../vendor/autoload.php';
 
-use Clases\Familia;
+
 use Philo\Blade\Blade;
 
 $views = '../views';
 $cache = '../cache';
+
 $blade = new Blade($views, $cache);
-if (isset($_SESSION['nombre'])) {
-    $titulo = 'Familias';
-    $encabezado = 'Listado de Familias';
-    $usuario = $_SESSION['nombre'];
-    $familias = (new Familia())->recuperarFamilias();
+if (isset($_SESSION['error'])) {
+    $error = $_SESSION['error'];
     echo $blade
         ->view()
-        ->make('vistaFamilias', compact('titulo', 'encabezado', 'usuario', 'familias'))
+        ->make('vistaLogin', compact('error'))
         ->render();
+    unset($_SESSION['error']);
 } else {
     echo $blade
         ->view()

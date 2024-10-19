@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
-        'name' => 'nazaret/nazaret',
+        'name' => 'nazaret/dwes05_cont_r30_ejercicio2_4',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'fb63521d68406f09691253bcb82eb0b9810e211b',
+        'reference' => '2e810e957980d880d66a1f9a698842038fe40c97',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -82,10 +82,10 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
-        'nazaret/nazaret' => array(
+        'nazaret/dwes05_cont_r30_ejercicio2_4' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'fb63521d68406f09691253bcb82eb0b9810e211b',
+            'reference' => '2e810e957980d880d66a1f9a698842038fe40c97',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

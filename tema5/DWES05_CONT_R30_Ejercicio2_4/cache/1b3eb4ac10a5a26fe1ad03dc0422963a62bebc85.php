@@ -43,11 +43,11 @@
         </div>
 
     </div>
-    @if (isset($error))
+    <?php if(isset($error)): ?>
         <div class="alert alert-danger h-100 mt-3">
-            <p>{{ $error }}</p>
+            <p><?php echo e($error); ?></p>
         </div>
-    @endif
+    <?php endif; ?>
 </div>
 
 </body>

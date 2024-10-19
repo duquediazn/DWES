@@ -11,18 +11,18 @@
     <!--Fontawesome CDN-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
           integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-    <title>@yield('titulo')</title>
+    <title><?php echo $__env->yieldContent('titulo'); ?></title>
 </head>
 <body style="background:#0277bd">
 <div class="float float-right d-inline-flex mt-2">
     <i class="fas fa-user mr-3 fa-2x"></i>
-    <input type="text" size='10px' value='{{$usuario}}' class="form-control mr-2 bg-transparent text-white" disabled>
+    <input type="text" size='10px' value='<?php echo e($usuario); ?>' class="form-control mr-2 bg-transparent text-white" disabled>
     <a href='cerrar.php' class='btn btn-danger mr-2'>Salir</a>
 </div>
 <br><br>
 <div class="container mt-3">
-    <h3 class="text-center mt-3 mb-3">@yield('encabezado')</h3>
-    @yield('contenido')
+    <h3 class="text-center mt-3 mb-3"><?php echo $__env->yieldContent('encabezado'); ?></h3>
+    <?php echo $__env->yieldContent('contenido'); ?>
 </div>
 
 </body>

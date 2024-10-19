@@ -1,6 +1,5 @@
 {
-    "name": "nazaret/nazaret",
-    "description": "Tarea del tema 5 de DWES",
+    "name": "nazaret/dwes05_cont_r30_ejercicio2_4",
     "type": "project",
     "require": {
         "philo/laravel-blade": "^3.1"
@@ -19,6 +18,7 @@
     "config": {
         "allow-plugins": {
             "kylekatarnls/update-helper": true
-        }
+        },
+        "optimize-autoloader": true
     }
 }

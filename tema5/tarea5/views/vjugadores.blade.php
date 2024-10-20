@@ -34,7 +34,7 @@
             @else
                 <td>Sin Asignar</td> 
             @endif
-            <td>{{$jugador->barcode}}</td>
+            <td>{{$generator->getBarcode($jugador->barcode, $generator::TYPE_EAN_13)}}</td>
         </tr>
     @endforeach
     </tbody>

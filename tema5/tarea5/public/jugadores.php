@@ -6,6 +6,7 @@ require '../vendor/autoload.php';
 
 use Clases\Data;
 use Philo\Blade\Blade; // Se importa la clase Blade para el manejo de plantillas.
+use Picqer\Barcode\BarcodeGeneratorHTML; // Se importa la clase BarcodeGeneratorHTML (para mostrar la imagen del código de barras)
 
 // Se definen las rutas para las vistas y la caché que utilizará Blade.
 $views = '../views';
@@ -19,6 +20,9 @@ $titulo = 'Jugadores';
 $encabezado = 'Listado Jugadores';
 $jugadores = (new Data())->recuperarJugadores();
 
+// Creamos una instancia del generador de códigos de barras
+$generator = new BarcodeGeneratorHTML();
+
 // Se prepara el mensaje para el usuario, si existe.
 $mensaje = $_SESSION['mensaje'] ?? ""; //Operador null coalescente.
 unset($_SESSION['mensaje']); // Limpiamos el mensaje de la sesión.
@@ -26,5 +30,5 @@ unset($_SESSION['mensaje']); // Limpiamos el mensaje de la sesión.
 // Se renderiza la vista 'vjugadores' pasando las variables definidas.
 echo $blade
     ->view()
-    ->make('vjugadores', compact('titulo', 'encabezado', 'jugadores', 'mensaje'))
+    ->make('vjugadores', compact('titulo', 'encabezado', 'jugadores', 'mensaje', 'generator'))
     ->render();

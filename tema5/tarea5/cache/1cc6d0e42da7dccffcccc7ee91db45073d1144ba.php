@@ -36,7 +36,7 @@
             <?php else: ?>
                 <td>Sin Asignar</td> 
             <?php endif; ?>
-            <td><?php echo e($jugador->barcode); ?></td>
+            <td><?php echo e('<img src="data:image/png;base64,' . base64_encode($generator->getBarcode($jugador->barcode, $generator::TYPE_EAN_13)) . '">'); ?></td>
         </tr>
     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </tbody>

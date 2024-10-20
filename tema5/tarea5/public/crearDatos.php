@@ -23,7 +23,7 @@ for ($i = 0; $i < 10; $i++) {
 
     // Validar dorsal, generando uno nuevo hasta encontrar uno válido.
     do {
-        $dorsal = $faker->numberBetween(1, 99); // Generar un dorsal aleatorio entre 1 y 99.
+        $dorsal = $faker->numberBetween(1, 30); // Generar un dorsal aleatorio entre 1 y 30.
     } while (!(new Data())->isValidDorsal($dorsal));
 
     //Nueva instancia de Jugador con los datos generados.

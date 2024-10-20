@@ -37,6 +37,15 @@
                 <td>Sin Asignar</td> 
             <?php endif; ?>
             <td><?php echo $generator->getBarcode($jugador->barcode, $generator::TYPE_EAN_13, 2, 30, 'white'); ?></td>
+            <!-- 
+                Para no escapar el contenido y mostrar el HTML directamente usamos las exclamaciones.
+                Usamos el método getBarcode() para generar el HTML, le pasamos:
+                 - El valor del código de barras de cada jugador: $jugador->barcode
+                 - EAN-13, el tipo de código: $generator::TYPE_EAN_13
+                 - Ancho de la barra en píxeles, por ejemplo: 2
+                 - Alto de la barra en píxeles, por ejemplo: 30
+                 - El color de las barras: 'white'
+            -->
         </tr>
     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </tbody>

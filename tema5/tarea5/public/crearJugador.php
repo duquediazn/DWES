@@ -67,12 +67,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Validación dorsal:
-    // comprobar si es entero y está entre 1 y 99
+    // comprobar si es entero y está entre 1 y 30
     if (!empty($_POST['dorsal'])) {
-        // Verificamos que el dorsal sea un número entero entre 1 y 99
+        // Verificamos que el dorsal sea un número entero entre 1 y 30
         if (
             filter_var($_POST['dorsal'], FILTER_VALIDATE_INT) !== false
-            && $_POST['dorsal'] >= 1 && $_POST['dorsal'] <= 99
+            && $_POST['dorsal'] >= 1 && $_POST['dorsal'] <= 30
         ) {
             // Si el dorsal es válido, comprobar si otro jugador ya tiene ese dorsal
             if ((new Data())->isValidDorsal($_POST['dorsal'])) {
@@ -81,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['errores']["dorsal"] = "Otro jugador ya tiene ese dorsal.";
             }
         } else {
-            $_SESSION['errores']["dorsal"] = "El dorsal debe ser un número entero entre 1 y 99.";
+            $_SESSION['errores']["dorsal"] = "El dorsal debe ser un número entero entre 1 y 30.";
         }
     } else {
         $dorsal = null;

@@ -11,16 +11,19 @@ $blade = new Blade($views, $cache);
 $titulo = 'Crear Jugador';
 $encabezado = 'Crear Jugador';
 
-if(isset($_SESSION['codigo'])) {
+// Se recupera el código de barras almacenado en la sesión, si existe.
+if (isset($_SESSION['codigo'])) {
     $codigo = $_SESSION['codigo'];
     unset($_SESSION['codigo']);
 }
 
-if(isset($_SESSION['errores'])) {
+// Se recuperan los errores durante la validación, de existir.
+if (isset($_SESSION['errores'])) {
     $errores = $_SESSION['errores'];
     unset($_SESSION['errores']);
 }
 
+// Se renderiza la vista 'vcrear' pasando las variables definidas.
 echo $blade
     ->view()
     ->make('vcrear', compact('titulo', 'encabezado', 'codigo', 'errores'))

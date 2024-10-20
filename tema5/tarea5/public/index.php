@@ -1,17 +1,19 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
+// Incluye el autoloader generado por Composer para cargar las dependencias y las clases de forma automática.
 require '../vendor/autoload.php';
 
-use Clases\Data;
+use Clases\Data; // Importa la clase Data desde el espacio de nombres "Clases".
 
-if ((new Data())->recuperarJugadores()) {
+// Crear una instancia de la clase Data.
+$data = new Data();
+
+// Verifica si hay jugadores en la base de datos.
+if ($data->recuperarJugadores()) {
     header('Location: jugadores.php');
-    exit();
+    exit(); // Finaliza el script para evitar que se ejecute código adicional después de la redirección.
 }
+
+// Si no hay jugadores, redirige a la página de instalación.
 header('Location: instalacion.php');
-
-
+exit();

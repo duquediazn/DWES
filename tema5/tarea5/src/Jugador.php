@@ -58,13 +58,16 @@ class Jugador extends Conexion
         $this->barcode = $barcode;
     }
 
-
+    // Método para crear un nuevo jugador en la base de datos.
     public function crearJugador()
     {
+        // Consulta SQL para insertar un nuevo jugador.
         $insert = "insert into jugadores(nombre, apellidos, dorsal, posicion, barcode) 
         values(:nombre, :apellidos, :dorsal, :posicion, :barcode)";
+        // Preparar la consulta.
         $stmt = $this->conexion->prepare($insert);
         try {
+            // Ejecutar la consulta con los parámetros correspondientes.
             $stmt->execute([
                 ':nombre' => $this->nombre,
                 ':apellidos' => $this->apellidos,
@@ -73,7 +76,8 @@ class Jugador extends Conexion
                 ':barcode' => $this->barcode
             ]);
         } catch (PDOException $ex) {
-            die("Ocurrio un error al insertar el producto: " . $ex->getMessage());
+            // Manejo de errores en caso de falla en la ejecución de la consulta.
+            throw new PDOException("Ocurrio un error al insertar el jugador: " . $ex->getMessage());
         }
     }
 }

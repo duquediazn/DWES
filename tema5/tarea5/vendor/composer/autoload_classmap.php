@@ -15,6 +15,7 @@ return array(
     'Carbon\\Translator' => $vendorDir . '/nesbot/carbon/src/Carbon/Translator.php',
     'Carbon\\Upgrade' => $vendorDir . '/nesbot/carbon/src/Carbon/Upgrade.php',
     'Clases\\Conexion' => $baseDir . '/src/Conexion.php',
+    'Clases\\Data' => $baseDir . '/src/Data.php',
     'Clases\\Jugador' => $baseDir . '/src/Jugador.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Doctrine\\Common\\Inflector\\Inflector' => $vendorDir . '/doctrine/inflector/lib/Doctrine/Common/Inflector/Inflector.php',

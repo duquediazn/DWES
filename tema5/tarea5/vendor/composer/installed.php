@@ -3,7 +3,7 @@
         'name' => 'nazaret/tarea5',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '012d8dd6c7322bfc45b51e3b28c906529873961a',
+        'reference' => '49d42774b77d9c6d1773bb0615a5f0f11fffc0ad',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -103,7 +103,7 @@
         'nazaret/tarea5' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '012d8dd6c7322bfc45b51e3b28c906529873961a',
+            'reference' => '49d42774b77d9c6d1773bb0615a5f0f11fffc0ad',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

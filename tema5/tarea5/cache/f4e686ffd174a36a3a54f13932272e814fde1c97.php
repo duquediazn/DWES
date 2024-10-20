@@ -56,7 +56,7 @@
             <input class="btn btn-primary me-2 mt-2" type="submit" value="Crear">
             <input class="btn btn-success me-2 mt-2" type="reset" value="Limpiar">
             <a class="btn btn-info me-2 mt-2" href="jugadores.php">Volver</a>
-            <a class="btn btn-secondary me-2 mt-2" href="generarCode.php"> <i class="bi bi-upc"></i>Generar Barcode</a>
+            <a class="btn btn-secondary me-2 mt-2" href="generarCode.php"><i class="bi bi-upc-scan"></i> Generar Barcode</a>
         </form>
     </div>
 <?php $__env->stopSection(); ?>

@@ -168,6 +168,7 @@ class ComposerStaticInit4ce556afbb2047fce33dbdab45716055
         'Carbon\\Translator' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Translator.php',
         'Carbon\\Upgrade' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Upgrade.php',
         'Clases\\Conexion' => __DIR__ . '/../..' . '/src/Conexion.php',
+        'Clases\\Data' => __DIR__ . '/../..' . '/src/Data.php',
         'Clases\\Jugador' => __DIR__ . '/../..' . '/src/Jugador.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Doctrine\\Common\\Inflector\\Inflector' => __DIR__ . '/..' . '/doctrine/inflector/lib/Doctrine/Common/Inflector/Inflector.php',

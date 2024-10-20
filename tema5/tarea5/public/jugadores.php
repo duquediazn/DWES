@@ -19,6 +19,7 @@ $titulo = 'Jugadores';
 $encabezado = 'Listado Jugadores';
 $jugadores = (new Data())->recuperarJugadores();
 
+//Creamos una instancia de BarcodeGeneratorHTML, que producirá un código de barras como HTML.
 $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
 
 // Se prepara el mensaje para el usuario, si existe.

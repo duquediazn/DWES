@@ -5,7 +5,8 @@ namespace Clases;
 use PDO;
 use PDOException;
 
-class Jugador extends Conexion {
+class Jugador extends Conexion
+{
 
     private $id;
     private $nombre;
@@ -14,10 +15,11 @@ class Jugador extends Conexion {
     private $posicion;
     private $barcode;
 
-    public function __construct($nombre="", $apellidos="", $dorsal="", $posicion="", $barcode="") {
+    public function __construct($nombre, $apellidos, $dorsal, $posicion, $barcode)
+    {
 
         parent::__construct();
-        
+
         $this->nombre = $nombre;
         $this->apellidos = $apellidos;
         $this->dorsal = $dorsal;
@@ -26,32 +28,39 @@ class Jugador extends Conexion {
     }
 
     //Setters
-    public function setId($id){
+    public function setId($id)
+    {
         $this->id = $id;
     }
 
-    public function setNombre($nombre){
-        $this->nombre=$nombre;
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
     }
 
-    public function setApellidos($apellidos){
-        $this->apellidos= $apellidos;
+    public function setApellidos($apellidos)
+    {
+        $this->apellidos = $apellidos;
     }
 
-    public function setDorsal($dorsal){
-        $this->dorsal=$dorsal;
+    public function setDorsal($dorsal)
+    {
+        $this->dorsal = $dorsal;
     }
 
-    public function setPosicion($posicion){
-        $this->posicion=$posicion;
+    public function setPosicion($posicion)
+    {
+        $this->posicion = $posicion;
     }
 
-    public function setBarcode($barcode){
-        $this->barcode=$barcode;
+    public function setBarcode($barcode)
+    {
+        $this->barcode = $barcode;
     }
 
 
-    public function crearJugador() {
+    public function crearJugador()
+    {
         $insert = "insert into jugadores(nombre, apellidos, dorsal, posicion, barcode) 
         values(:nombre, :apellidos, :dorsal, :posicion, :barcode)";
         $stmt = $this->conexion->prepare($insert);
@@ -67,6 +76,4 @@ class Jugador extends Conexion {
             die("Ocurrio un error al insertar el producto: " . $ex->getMessage());
         }
     }
-    
-    
 }

@@ -6,7 +6,7 @@ Tiene un botón crear que llama al formulario para crear un jugador nuevo. Si un
 session_start();
 
 require '../vendor/autoload.php';
-use Clases\Jugador;
+
 use Clases\Data;
 use Philo\Blade\Blade;
 
@@ -19,7 +19,7 @@ $encabezado = 'Listado Jugadores';
 $jugadores = (new Data())->recuperarJugadores();
 $mensaje = "";
 
-if(isset($_SESSION['mensaje'])) {
+if (isset($_SESSION['mensaje'])) {
     $mensaje = $_SESSION['mensaje'];
     unset($_SESSION['mensaje']);
 }

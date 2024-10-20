@@ -5,11 +5,12 @@ namespace Clases;
 use PDO;
 use PDOException;
 
-class Data extends Conexion{
-    public function __construct() {
+class Data extends Conexion
+{
+    public function __construct()
+    {
 
         parent::__construct();
-    
     }
 
     public function recuperarJugadores()
@@ -20,19 +21,20 @@ class Data extends Conexion{
             $resultados = $stmt->fetchAll(PDO::FETCH_OBJ);
             if ($resultados) {
                 return $resultados; // Devolver los resultados como un array de objetos
-            } 
+            }
         } catch (PDOException $ex) {
             die("Error al recuperar jugadores: " . $ex->getMessage());
         }
         return null; // Retornar null si no hay resultados
     }
-    
-    public function isValidCode($codigo) {
+
+    public function isValidCode($codigo)
+    {
         $consulta = "SELECT barcode FROM jugadores";
         try {
             $stmt = $this->conexion->query($consulta);
             $resultados = $stmt->fetchAll(PDO::FETCH_COLUMN);
-            if ($resultados && array_search($codigo, $resultados)) {
+            if ($resultados &&  array_search($codigo, $resultados) !== false) {
                 return false;
             } else {
                 return true;
@@ -40,15 +42,15 @@ class Data extends Conexion{
         } catch (PDOException $ex) {
             die("Error al recuperar jugadores: " . $ex->getMessage());
         }
-        
     }
 
-    public function isValidDorsal($dorsal) {
+    public function isValidDorsal($dorsal)
+    {
         $consulta = "SELECT dorsal FROM jugadores";
         try {
             $stmt = $this->conexion->query($consulta);
             $resultados = $stmt->fetchAll(PDO::FETCH_COLUMN);
-            if ($resultados && array_search($dorsal, $resultados)) {
+            if ($resultados &&  array_search($dorsal, $resultados) !== false) {
                 return false;
             } else {
                 return true;
@@ -56,6 +58,5 @@ class Data extends Conexion{
         } catch (PDOException $ex) {
             die("Error al recuperar jugadores: " . $ex->getMessage());
         }
-        
     }
 }

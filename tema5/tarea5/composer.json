@@ -3,7 +3,6 @@
     "type": "project",
     "require": {
         "philo/laravel-blade": "^3.1",
-        "milon/barcode": "^6.0",
         "fakerphp/faker": "^1.23",
         "picqer/php-barcode-generator": "^2.4"
     },
@@ -23,6 +22,5 @@
             "kylekatarnls/update-helper": true
         },
         "optimize-autoloader": true
-
     }
 }

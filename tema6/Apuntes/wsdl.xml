@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+definitions: Es el elemento raíz del archivo WSDL. 
+Define el espacio de nombres, el nombre del servicio y otras configuraciones generales.
+En este caso, el targetNamespace define el espacio de nombres objetivo del servicio, 
+y name es el nombre del servicio.
+-->
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:tns="http://miwebservice.com/servicio"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             targetNamespace="http://miwebservice.com/servicio"
+             name="ServicioCliente">
+
+    <!-- Tipos de datos -->
+    <!--
+    types: Define los tipos de datos que se utilizarán en el servicio. 
+    En este ejemplo, se define una estructura compleja (complexType) con los elementos clienteID 
+    y tipoSolicitud para la solicitud, y nombreCliente y estadoCuenta para la respuesta.
+     -->
+    <types>
+        <xsd:schema targetNamespace="http://miwebservice.com/servicio">
+            <xsd:element name="solicitudDatos">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="clienteID" type="xsd:string"/>
+                        <xsd:element name="tipoSolicitud" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="respuestaDatos">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="nombreCliente" type="xsd:string"/>
+                        <xsd:element name="estadoCuenta" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </types>
+
+    <!-- Mensajes -->
+    <!-- 
+    message: Define los mensajes que serán enviados o recibidos por el servicio. 
+    Un mensaje puede contener una o más partes, que hacen referencia a los elementos definidos en la sección types.
+    En este ejemplo, hay un mensaje para la solicitud (SolicitudDatosRequest) y otro para la respuesta (SolicitudDatosResponse).
+    -->
+    <message name="SolicitudDatosRequest">
+        <part name="parameters" element="tns:solicitudDatos"/>
+    </message>
+    <message name="SolicitudDatosResponse">
+        <part name="parameters" element="tns:respuestaDatos"/>
+    </message>
+
+    <!-- Puerto/Operaciones -->
+    <!--
+    portType: Define las operaciones disponibles para el servicio. 
+    Cada operación tiene un mensaje de entrada (input) y uno de salida (output). 
+    Aquí se define la operación obtenerDatosCliente.
+    -->
+    <portType name="ServicioClientePortType">
+        <operation name="obtenerDatosCliente">
+            <input message="tns:SolicitudDatosRequest"/>
+            <output message="tns:SolicitudDatosResponse"/>
+        </operation>
+    </portType>
+
+    <!-- Enlace/Binding -->
+    <!--
+    binding: Define cómo se va a transmitir el servicio. En este ejemplo, 
+    el tipo de enlace es SOAP sobre HTTP, con el estilo de documento (document)
+    y un soapAction que especifica la URL asociada a la operación.
+     -->
+    <binding name="ServicioClienteSoapBinding" type="tns:ServicioClientePortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="obtenerDatosCliente">
+            <soap:operation soapAction="http://miwebservice.com/servicio/obtenerDatosCliente"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <!-- Servicio -->
+    <!-- 
+    service: Es el componente final que define el servicio y su dirección (URL). 
+    En este caso, el servicio se llama ServicioCliente y se accede en la dirección especificada.
+    -->
+    <service name="ServicioCliente">
+        <port name="ServicioClientePort" binding="tns:ServicioClienteSoapBinding">
+            <soap:address location="http://miwebservice.com/servicio/ServicioCliente"/>
+        </port>
+    </service>
+
+</definitions>

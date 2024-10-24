@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:ser="http://miwebservice.com/servicio">
+   <!-- Cabecera del mensaje -->
+   <soapenv:Header>
+      <ser:auth>
+         <ser:username>usuario123</ser:username>
+         <ser:password>miContraseñaSecreta</ser:password>
+      </ser:auth>
+   </soapenv:Header>
+   
+   <!-- Cuerpo del mensaje -->
+   <soapenv:Body>
+      <ser:solicitudDatos>
+         <ser:clienteID>456789</ser:clienteID>
+         <ser:tipoSolicitud>InformacionGeneral</ser:tipoSolicitud>
+      </ser:solicitudDatos>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+<!-- 
+Envelope (Sobre): Es el elemento raíz y obligatorio en un mensaje SOAP. 
+Involucra toda la estructura del mensaje y define el espacio de nombres del protocolo SOAP.
+
+En este caso, el espacio de nombres estándar de SOAP es http://schemas.xmlsoap.org/soap/envelope/, 
+pero se puede usar otro dependiendo de la versión de SOAP.
+
+Header (Cabecera): Es opcional. Aquí es donde se puede incluir información adicional, 
+como credenciales de autenticación, metadatos, etc. En este ejemplo, 
+se incluyen credenciales de autenticación (username y password).
+
+Body (Cuerpo): Es obligatorio y contiene el contenido principal del mensaje. 
+Este es el lugar donde se realizan las llamadas a los métodos del servicio web 
+y se envían o reciben los datos necesarios.
+
+Namespaces (Espacios de nombres): Son esenciales en SOAP para evitar conflictos de nombres.
+En este ejemplo, se define un espacio de nombres (ser) para el servicio web específico http://miwebservice.com/servicio. 
+Estos espacios de nombres permiten diferenciar elementos que podrían tener el mismo nombre en distintos contextos.
+-->

@@ -1,0 +1,15 @@
+{
+    "name": "nazaret/tema6",
+    "type": "project",
+    "require": {
+        "wsdltophp/packagegenerator": "^4.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Clases\\": "src/"
+        }
+    },
+    "config": {
+	    "optimize-autoloader": true
+    }
+}

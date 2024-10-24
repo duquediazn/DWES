@@ -84,6 +84,68 @@ y name es el nombre del servicio.
         </operation>
     </binding>
 
+    <!-- 
+    En un documento WSDL podemos especificar dos estilos de enlazado: document o RPC. La
+    selección que hagamos influirá en cómo se transmitan los mensajes dentro de las
+    peticiones y respuestas SOAP. Por ejemplo, un mensaje SOAP con estilo document podría ser:
+
+    <SOAP-ENV:Body>
+        <producto>
+            <codigo>KFDJHFHSJ</codigo>
+        </producto>
+    </SOAP-ENV:Body>
+
+   Y un mensaje con estilo RPC sería por ejemplo:
+
+    <SOAP-ENV:Body>
+        <ns1:getPVP>
+            <param0 xsi:type="xsd:string">KFDJHFHSJ</param0>
+        </ns1:getPVP>
+    </SOAP-ENV:Body>
+
+    El estilo de enlazado RPC está más orientado a sistemas de petición y respuesta que el
+    document (más orientado a la transmisión de documentos en formato XML). En este estilo de
+    enlazado, cada elemento message de WSDL debe contener un elemento part por cada
+    parámetro (de entrada o de salida), y dentro de éste indicar el tipo de datos del parámetro
+    mediante un atributo type, como se muestra en el ejemplo anterior.
+    Además, cada estilo de enlazado puede ser de tipo encoded o literal (aunque en realidad la
+    combinación document/encoded no se utiliza). Al indicar encoded, estamos diciendo que vamos
+    a usar un conjunto de reglas de codificación, como las que se incluyen en el propio
+    protocolo SOAP (espacio de nombres "http://schemas.xmlsoap.org/soap/encoding/"), para
+    convertir en XML los parámetros de las peticiones y respuestas.
+    El ejemplo anterior de RPC es en realidad RPC/encoded. Un ejemplo de un mensaje SOAP con
+    estilo RPC/literal sería:
+
+    <SOAP-ENV:Body>
+        <ns1:getPVP>
+            <param0>KFDJHFHSJ</param0>
+        </ns1:getPVP>
+    </SOAP-ENV:Body>
+
+
+    Ejemplo de binding: RPC / Encoded: 
+
+    <binding name="usuarioBinding" type="tns:usuarioPortType">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="getUsuario">
+            <soap:operation soapAction="http://localhost/dwes/ut6/getUsuario.php?getUsuario"/>
+            <input>
+                <soap:body use="encoded"
+                    encodingStyle="http://localhost/dwes/ut6/getUsuario.php?getUsuario"
+                    namespace="http://localhost/dwes/ut6">
+            </input>
+            <output>
+                <soap:body use="encoded"
+                    encodingStyle="http://localhost/dwes/ut6/getUsuario.php?getUsuario"
+                    namespace="http://localhost/dwes/ut6">
+            </output>
+        </operation>
+    </binding>
+    
+    Recuerda añadir en definitions: 
+    xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+    -->
+
     <!-- Servicio -->
     <!-- 
     service: Es el componente final que define el servicio y su dirección (URL). 
@@ -96,3 +158,33 @@ y name es el nombre del servicio.
     </service>
 
 </definitions>
+
+
+<!-- 
+El otro tipo de datos que necesitaremos definir en los documentos WSDL son los arrays.
+Para definir un array, no existe en el XML Schema un tipo base adecuado que podamos usar.
+En su lugar, se utiliza el tipo Array definido en el esquema enconding de SOAP. Por ejemplo,
+podríamos añadir un tipo array de usuarios al documento anterior haciendo:
+
+<xsd:complexType name="ArrayOfUsuario">
+    <xsd:complexContenct>
+        <xsd:restriction base="soapenv:Array">
+            <xsd:attibute ref="soapenv:arrayType" arrayType="tns:usuario[]"/>
+        </xsd:restriction>
+    </xsd:complexContent>
+</xsd:complexType>    
+
+
+Al definir un array en WSDL, se debe tener en cuenta que:
+El atributo arrayType se utiliza para indicar qué elementos contendrá el array.
+Se debe añadir al documento el espacio de nombres SOAP encoding:
+
+En definitions: 
+xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+
+El nombre del array debería ser ArrayOfXXX, dónde XXX es el nombre del tipo de
+elementos que contiene el array.
+En muchas ocasiones no será necesario definir tipos propios, y por tanto en el documento
+WSDL no habrá sección types; será suficiente con utilizar alguno de los tipos propios de XML
+Schema, como xsd:string, xsd:float o xsd:boolean.
+-->

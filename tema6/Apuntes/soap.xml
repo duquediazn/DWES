@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
                   xmlns:ser="http://miwebservice.com/servicio">
    <!-- Cabecera del mensaje -->
-   <soapenv:Header>
+   <soap:Header>
       <ser:auth>
          <ser:username>usuario123</ser:username>
          <ser:password>miContraseñaSecreta</ser:password>
       </ser:auth>
-   </soapenv:Header>
+   </soap:Header>
    
    <!-- Cuerpo del mensaje -->
-   <soapenv:Body>
+   <soap:Body>
       <ser:solicitudDatos>
          <ser:clienteID>456789</ser:clienteID>
          <ser:tipoSolicitud>InformacionGeneral</ser:tipoSolicitud>
       </ser:solicitudDatos>
-   </soapenv:Body>
-</soapenv:Envelope>
+   </soap:Body>
+</soap:Envelope>
 
 <!-- 
 Envelope (Sobre): Es el elemento raíz y obligatorio en un mensaje SOAP. 

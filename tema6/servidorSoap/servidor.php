@@ -1,5 +1,27 @@
 <?php
+/*
+Importante: 
+Para poder usar SOAP hay que descomentar en php.ini la línea: 
+;extension=soap
+Hay que quitar el ";": 
+extension=soap
 
+Si al hacer phpinfo() no se muestra la sección de SOAP: 
+Soap Client 	enabled
+Soap Server 	enabled
+Directive	Local Value	Master Value
+soap.wsdl_cache	1	1
+soap.wsdl_cache_dir	/tmp	/tmp
+soap.wsdl_cache_enabled	On	On
+soap.wsdl_cache_limit	5	5
+soap.wsdl_cache_ttl	86400	86400
+
+Hay que reinstalar php con la siguiente opción: 
+sudo apt install php8.1-soap
+
+Para la versión 8.1 o la que corresponda. 
+
+*/
 class Operaciones
 {
     public function resta($a, $b)
@@ -16,7 +38,7 @@ class Operaciones
     }
 }
 
-$uri = 'http://localhost/DWES/tema6/servidorSoap';
+$uri = 'http://localhost/~nazaret/DWES/tema6/servidorSoap/';
 $parametros = ['uri' => $uri];
 try {
     $server = new SoapServer(NULL, $parametros);

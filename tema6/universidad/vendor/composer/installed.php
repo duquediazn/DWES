@@ -3,7 +3,7 @@
         'name' => 'nazaret/tema6',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '5903ddbce681aaac356fd197af578be55470e39c',
+        'reference' => '76231c6d57c3f34f7e42c060cab2945a12b2a2b3',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -94,7 +94,7 @@
         'nazaret/tema6' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '5903ddbce681aaac356fd197af578be55470e39c',
+            'reference' => '76231c6d57c3f34f7e42c060cab2945a12b2a2b3',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

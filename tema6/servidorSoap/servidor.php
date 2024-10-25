@@ -22,21 +22,7 @@ sudo apt install php8.1-soap
 Para la versión 8.1 o la que corresponda. 
 
 */
-class Operaciones
-{
-    public function resta($a, $b)
-    {
-        return $a - $b;
-    }
-    public function suma($a, $b)
-    {
-        return $a + $b;
-    }
-    public function saludo($texto)
-    {
-        return "Hola $texto";
-    }
-}
+require 'src/Operaciones.php';
 
 $uri = 'http://localhost/~nazaret/DWES/tema6/servidorSoap/';
 $parametros = ['uri' => $uri];

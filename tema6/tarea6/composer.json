@@ -1,0 +1,12 @@
+{
+    "name": "nazaret/tarea6",
+    "autoload": {
+        "psr-4": {
+            "Clases\\": "src/"
+        }
+    },
+    "config": {
+	    "optimize-autoloader": true
+    },
+    "require": {}
+}

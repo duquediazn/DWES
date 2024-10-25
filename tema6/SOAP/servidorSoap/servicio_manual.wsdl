@@ -60,48 +60,48 @@ Los elementos message serán:-->
 <binding name="OperacionesBinding" type="tns:OperacionesPort">
     <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
     <operation name="resta">
-        <soap:operation soapAction="http://localhost/~nazaret/DWES/tema6/servidorSoap/servidor.php#resta" />
+        <soap:operation soapAction="http://localhost/~nazaret/DWES/tema6/SOAP/servidorSoap/servidor.php#resta" />
         <input>
             <soap:body
                 use="encoded"
                 encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
-                namespace="http://localhost/~nazaret/DWES/tema6/servidorSoap/servidor.php" />
+                namespace="http://localhost/~nazaret/DWES/tema6/SOAP/servidorSoap/servidor.php" />
         </input>
         <output>
             <soap:body 
                 use="encoded"
                 encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
-                namespace="http://localhost/~nazaret/DWES/tema6/servidorSoap/servidor.php" />
+                namespace="http://localhost/~nazaret/DWES/tema6/SOAP/servidorSoap/servidor.php" />
         </output>
     </operation>
     <operation name="suma">
-        <soap:operation soapAction="http://localhost/~nazaret/DWES/tema6/servidorSoap/servidor.php#suma" />
+        <soap:operation soapAction="http://localhost/~nazaret/DWES/tema6/SOAP/servidorSoap/servidor.php#suma" />
         <input>
             <soap:body
                 use="encoded"
                 encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
-                namespace="http://localhost/~nazaret/DWES/tema6/servidorSoap/servidor.php" />
+                namespace="http://localhost/~nazaret/DWES/tema6/SOAP/servidorSoap/servidor.php" />
             </input>
         <output>
             <soap:body
                 use="encoded"
                 encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
-                namespace="http://localhost/~nazaret/DWES/tema6/servidorSoap//servidor.php" />
+                namespace="http://localhost/~nazaret/DWES/tema6/SOAP/servidorSoap//servidor.php" />
         </output>
     </operation>
     <operation name="saludo">
-        <soap:operation soapAction="http://localhost/~nazaret/DWES/tema6/servidorSoap/servidor.php#saludo" />
+        <soap:operation soapAction="http://localhost/~nazaret/DWES/tema6/SOAP/servidorSoap/servidor.php#saludo" />
         <input>
             <soap:body 
                 use="encoded" 
                 encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
-                namespace="http://localhost/~nazaret/DWES/tema6/servidorSoap/servidor.php" />
+                namespace="http://localhost/~nazaret/DWES/tema6/SOAP/servidorSoap/servidor.php" />
         </input>
         <output>
         <soap:body 
             use="encoded" 
             encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
-            namespace="http://localhost/~nazaret/DWES/tema6/servidorSoap/servidor.php" />
+            namespace="http://localhost/~nazaret/DWES/tema6/SOAP/servidorSoap/servidor.php" />
         </output>
     </operation>
 </binding>
@@ -109,6 +109,6 @@ Los elementos message serán:-->
 <!--Y para finalizar, el elemento service:-->
 <service name="OperacionesService">
     <port name="OperacionesPort" binding="tns:OperacionesBinding">
-        <soap:address location="http://localhost/unidad6/servidorSoap/servidor.php"/>
+        <soap:address location="http://localhost/unidad6/SOAP/servidorSoap/servidor.php"/>
     </port>
 </service>

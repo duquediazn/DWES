@@ -22,23 +22,26 @@ sudo apt install php8.1-soap
 Para la versión 8.1 o la que corresponda. 
 
 */
-require 'src/Operaciones.php';
+require '../vendor/autoload.php';
 
-$uri = 'http://localhost/~nazaret/DWES/tema6/servidorSoap/';
-$parametros = ['uri' => $uri];
+use Clases\Operaciones;
+
+//$uri = 'http://localhost/~nazaret/DWES/tema6/SOAP/servidorSoap/'; //sin wsdl
+//$parametros = ['uri' => $uri]; //sin wsdl
+$url = "http://localhost/~nazaret/DWES/tema6/SOAP/servidorSoap/servicio_php2wsdl.wsdl";
 try {
-    $server = new SoapServer(NULL, $parametros);
-    $server->setClass('Operaciones');
+    //$server = new SoapServer(NULL, $parametros); //sin wsdl
+    $server = new SoapServer($url);
+    $server->setClass('Clases\Operaciones');
     $server->handle();
 } catch (SoapFault $f) {
     die("error en server: " . $f->getMessage());
 }
 
-
 /*
  Para añadir las funciones de la clase
 "Operaciones" a nuestro "Servidor Soap" fíjate que hemos añadido "$server-
->setClass('Operaciones)" . Si hubiésemos implementados las funciones directamente, sin
+>setClass('Clases\Operaciones)" . Si hubiésemos implementados las funciones directamente, sin
 usar una clase, tendríamos que haberlas añadido usando "$server->addFunction('nombre')"
 
 El método handle es el encargado de

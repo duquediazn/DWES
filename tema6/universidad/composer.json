@@ -6,7 +6,10 @@
     },
     "autoload": {
         "psr-4": {
-            "Clases\\": "src/"
+            "Clases\\": "src/",
+            "ArrayType\\": "src/ArrayType",
+            "ServiceType\\": "src/ServiceType",
+            "StructType\\": "src/StructType"
         }
     },
     "config": {

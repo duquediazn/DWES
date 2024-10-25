@@ -25,6 +25,8 @@ return array(
     'Symfony\\Component\\Finder\\' => array($vendorDir . '/symfony/finder'),
     'Symfony\\Component\\Filesystem\\' => array($vendorDir . '/symfony/filesystem'),
     'Symfony\\Component\\Console\\' => array($vendorDir . '/symfony/console'),
+    'StructType\\' => array($baseDir . '/src/StructType'),
+    'ServiceType\\' => array($baseDir . '/src/ServiceType'),
     'Seld\\Signal\\' => array($vendorDir . '/seld/signal-handler/src'),
     'Seld\\PharUtils\\' => array($vendorDir . '/seld/phar-utils/src'),
     'Seld\\JsonLint\\' => array($vendorDir . '/seld/jsonlint/src/Seld/JsonLint'),
@@ -40,4 +42,6 @@ return array(
     'Composer\\ClassMapGenerator\\' => array($vendorDir . '/composer/class-map-generator/src'),
     'Composer\\CaBundle\\' => array($vendorDir . '/composer/ca-bundle/src'),
     'Composer\\' => array($vendorDir . '/composer/composer/src/Composer'),
+    'Clases\\' => array($baseDir . '/src'),
+    'ArrayType\\' => array($baseDir . '/src/ArrayType'),
 );

@@ -1,5 +1,11 @@
 {
     "name": "nazaret/tarea6",
+    "description": "Tarea tema 6",
+    "type": "project",
+    "require": {
+        "php2wsdl/php2wsdl": "^0.7.0",
+        "wsdl2phpgenerator/wsdl2phpgenerator": "^3.4"
+    },
     "autoload": {
         "psr-4": {
             "Clases\\": "src/"
@@ -8,5 +14,10 @@
     "config": {
 	    "optimize-autoloader": true
     },
-    "require": {}
+    "authors": [
+        {
+            "name": "nazaret",
+            "email": "duquediazn@gmail.com"
+        }
+    ]
 }

@@ -5,8 +5,8 @@ ini_set('display_errors', 1);
 require "vendor/autoload.php";
 
 $operacion = new Clases\Operaciones();
-$pvp=$operacion->getPVP('1');
-$unidades=$operacion->getStock('1', '1');
+$pvp=$operacion->getPVP(1);
+$unidades=$operacion->getStock(1, 1);
 $familias=$operacion->getFamilias();
 $productos=$operacion->getProductosFamilia('CONSOL');
 

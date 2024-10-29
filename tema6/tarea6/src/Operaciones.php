@@ -30,8 +30,8 @@ class Operaciones extends Conexion {
      * Este método recibe el código de un producto y devuelve su PVP correspondiente.
      * 
      * @soap
-     * @param int $codigo Código del producto.
-     * @return float El PVP del producto, o 0.0 si no se encuentra el producto.
+     * @param int $codigo 
+     * @return float 
      */
     public function getPVP(int $codigo) : float {
         $consulta = "SELECT pvp FROM productos WHERE id = :codigo";
@@ -53,9 +53,9 @@ class Operaciones extends Conexion {
      * devolviendo el stock existente en esa tienda para el producto.
      * 
      * @soap
-     * @param int $cod_producto Código del producto.
-     * @param int $cod_tienda Código de la tienda.
-     * @return int El número de unidades del producto en la tienda especificada, o 0 si no se encuentra.
+     * @param int $cod_producto 
+     * @param int $cod_tienda 
+     * @return int 
      */
     public function getStock(int $cod_producto, int $cod_tienda) : int {
         $consulta = "SELECT unidades FROM stocks WHERE producto = :cod_producto AND tienda = :cod_tienda";
@@ -79,7 +79,7 @@ class Operaciones extends Conexion {
      * Este método no recibe parámetros y devuelve un array con los códigos de todas las familias en la base de datos.
      * 
      * @soap
-     * @return array Lista de códigos de las familias.
+     * @return array 
      */
     public function getFamilias() : array {
         $consulta = "SELECT cod FROM familias";
@@ -99,8 +99,8 @@ class Operaciones extends Conexion {
      * Este método recibe el código de una familia y devuelve un array con los códigos de todos los productos de esa familia.
      * 
      * @soap
-     * @param string $cod_familia Código de la familia.
-     * @return array Lista de códigos de los productos pertenecientes a la familia.
+     * @param string $cod_familia 
+     * @return array 
      */
     public function getProductosFamilia(string $cod_familia) : array {
         $consulta = "SELECT id FROM productos WHERE familia = :cod_familia";

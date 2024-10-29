@@ -4,11 +4,13 @@
     "type": "project",
     "require": {
         "php2wsdl/php2wsdl": "^0.7.0",
-        "wsdl2phpgenerator/wsdl2phpgenerator": "^3.4"
+        "wsdl2phpgenerator/wsdl2phpgenerator": "^3.4",
+        "wsdltophp/packagegenerator": "^4.1"
     },
     "autoload": {
         "psr-4": {
-            "Clases\\": "src/"
+            "Clases\\": "src/",
+            "ServiceType\\": "src/Clases1/src/ServiceType"
         }
     },
     "config": {

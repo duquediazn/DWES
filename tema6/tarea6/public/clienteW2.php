@@ -1,14 +1,10 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 require '../vendor/autoload.php';
 
 // Configurar las opciones WSDL
 $options = [
     'wsdl_url' => 'http://localhost/~nazaret/DWES/tema6/tarea6/servidorSoap/servicioW.php?wsdl',
-    'trace' => true,
-    'exceptions' => true
+    'trace' => true
 ];
 
 // Crear una instancia de Get con las opciones WSDL

@@ -8,20 +8,46 @@ use PDOException;
 /**
  * Clase Operaciones
  * 
- * Esta clase hereda de la clase Conexion y permite realizar diversas operaciones de consulta
- * en la base de datos relacionadas con productos, familias de productos y stock en tiendas.
+ * Clase que gestiona la lógica de negocio para productos, familias y stock en una aplicación SOAP.
+ * Proporciona métodos para recuperar información como el PVP de un producto, el stock en una tienda, 
+ * los códigos de familias disponibles y los productos asociados a una familia.
  * 
  * @package Clases
  */
-class Operaciones extends Conexion {
+class Operaciones {
+
+    /**
+     * Instancia de Producto para manejar operaciones de productos.
+     * 
+     * @var Producto
+     */
+    private $producto;
+
+    /**
+     * Instancia de Familia para manejar operaciones de familias.
+     * 
+     * @var Familia
+     */
+    private $familia;
+
+    /**
+     * Instancia de Stock para manejar operaciones de stock.
+     * 
+     * @var Stock
+     */
+    private $stock;
 
     /**
      * Constructor de la clase Operaciones.
-     * Llama al constructor de la clase padre (Conexion) para inicializar la conexión a la base de datos.
+     * 
+     * Inicializa las instancias de Producto, Familia y Stock que serán utilizadas para interactuar con 
+     * la base de datos.
      */
     public function __construct()
     {
-        parent::__construct();
+        $this->producto = new Producto();
+        $this->familia = new Familia();
+        $this->stock = new Stock();
     }
 
     /**
@@ -30,13 +56,14 @@ class Operaciones extends Conexion {
      * Este método recibe el código de un producto y devuelve su PVP correspondiente.
      * 
      * @soap
-     * @param int $codigo 
-     * @return float 
+     * @param int $codigo Código del producto para el cual se desea obtener el PVP.
+     * @return float El PVP del producto especificado.
+     * @throws PDOException Si ocurre un error al recuperar el PVP desde la base de datos.
      */
     public function getPVP(int $codigo) : float {
         try {
-            $producto = new Producto($codigo);
-            return $producto ? (float) $producto->getPvp() : 0.0;
+            $this->producto->setId($codigo);
+            return $this->producto->getPVP();
         } catch (PDOException $ex) {
             throw new PDOException("Error al recuperar el PVP: " . $ex->getMessage());
         }
@@ -49,14 +76,16 @@ class Operaciones extends Conexion {
      * devolviendo el stock existente en esa tienda para el producto.
      * 
      * @soap
-     * @param int $cod_producto 
-     * @param int $cod_tienda 
-     * @return int 
+     * @param int $cod_producto Código del producto cuyo stock se quiere consultar.
+     * @param int $cod_tienda Código de la tienda en la cual se quiere consultar el stock.
+     * @return int La cantidad de unidades disponibles del producto en la tienda especificada.
+     * @throws PDOException Si ocurre un error al recuperar el stock desde la base de datos.
      */
     public function getStock(int $cod_producto, int $cod_tienda) : int {
         try {
-            $stock = new Stock($cod_producto,$cod_tienda);
-            return $stock ? (int) $stock->getUnidades() : 0;
+            $this->stock->setProducto($cod_producto);
+            $this->stock->setTienda($cod_tienda);
+            return $this->stock->getStock();
         } catch (PDOException $ex) {
             throw new PDOException("Error al recuperar el stock: " . $ex->getMessage());
         }
@@ -68,12 +97,12 @@ class Operaciones extends Conexion {
      * Este método no recibe parámetros y devuelve un array con los códigos de todas las familias en la base de datos.
      * 
      * @soap
-     * @return array 
+     * @return string[] Array de códigos de todas las familias.
+     * @throws PDOException Si ocurre un error al recuperar las familias desde la base de datos.
      */
     public function getFamilias() : array {
         try {
-            $familias = (new Familia())->getFamilias();
-            return $familias;
+            return $this->familia->getFamilias();
         } catch (PDOException $ex) {
             throw new PDOException("Error al recuperar las familias: " . $ex->getMessage());
         }
@@ -85,16 +114,14 @@ class Operaciones extends Conexion {
      * Este método recibe el código de una familia y devuelve un array con los códigos de todos los productos de esa familia.
      * 
      * @soap
-     * @param string $cod_familia 
-     * @return array 
+     * @param string $cod_familia Código de la familia cuyos productos se quieren recuperar.
+     * @return int[] Array de códigos de productos que pertenecen a la familia especificada.
+     * @throws PDOException Si ocurre un error al recuperar los productos desde la base de datos.
      */
     public function getProductosFamilia(string $cod_familia) : array {
         try {
-            $producto = new Producto();
-            $producto->setFamilia($cod_familia);
-            $productos=$producto->getProductosFamilia();
-            echo var_dump($productos);
-            return $productos;
+            $this->producto->setFamilia($cod_familia);
+            return $this->producto->getProductosPorFamilia();
         } catch (PDOException $ex) {
             throw new PDOException("Error al recuperar productos de la familia: " . $ex->getMessage());
         }

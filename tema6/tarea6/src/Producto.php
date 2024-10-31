@@ -7,39 +7,66 @@ use PDOException;
 
 class Producto extends Conexion
 {
-    private int $id;
-    private string $nombre;
-    private string $nombre_corto;
-    private float $pvp;
-    private string $familia;
-    private string $descripcion;
+    private $id;
+    private $nombre;
+    private $nombre_corto;
+    private $pvp;
+    private $familia;
+    private $descripcion;
+    
 
-    //Constructor:
-    public function __construct(int $id=0)
+    public function __construct()
     {
         parent::__construct();
-
-        $this->id = $id;
-        if ($id != 0) {
-
-            $taca = $this->read()[0];
-
-            $this->nombre = $taca->nombre;
-            $this->nombre_corto = $taca->nombre_corto;
-            $this->descripcion = $taca->descripcion;
-            $this->pvp = $taca->pvp;
-            $this->familia = $taca->familia;
-        }
     }
 
-    public function getProductosFamilia() {
-        $consulta = "SELECT id FROM productos WHERE familia = :cod_familia";
-        $stmt = $this->conexion->prepare($consulta);
+    // setters
+    public function setId($i)
+    {
+        $this->id = $i;
+    }
+
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+    }
+
+    public function setNombre_corto($nombre_corto)
+    {
+        $this->nombre_corto = $nombre_corto;
+    }
+
+    public function setPvp($pvp)
+    {
+        $this->pvp = $pvp;
+    }
+
+    public function setFamilia($familia)
+    {
+        $this->familia = $familia;
+    }
+
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+    }
+   
+    // Métodos para hacer el CRUD
+    // 1.- Create ---------
+    function create()
+    {
+        $insert = "insert into productos(nombre, nombre_corto, pvp, familia, descripcion) values(:n, :nc, :p, :f, :d)";
+        $stmt = $this->conexion->prepare($insert);
         try {
-            $stmt->execute([':cod_familia' => $this->familia]);
-            return $stmt->fetchAll(PDO::FETCH_COLUMN);
+            $stmt->execute([
+                ':n' => $this->nombre,
+                ':nc' => $this->nombre_corto,
+                ':p' => $this->pvp,
+                ':f' => $this->familia,
+                ':d' => $this->descripcion
+            ]);
         } catch (PDOException $ex) {
-            throw new PDOException("Error al recuperar productos de la familia: " . $ex->getMessage());
+            die("Ocurrio un error al insertar el producto: " . $ex->getMessage());
         }
     }
 
@@ -53,68 +80,105 @@ class Producto extends Conexion
         } catch (PDOException $ex) {
             die("Error al recuperar el producto: " . $ex->getMessage());
         }
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
+        return $stmt->fetchAll(PDO::FETCH_OBJ); //Devolvemos con All sólo es una fila
     }
 
-    // Getters
-    public function getId(): int
+    // 3.- Update
+    function update()
     {
-        return $this->id;
+        $update = "update productos set nombre=:n, nombre_corto=:nc, pvp=:p, familia=:f, descripcion=:d where id=:i";
+        $stmt = $this->conexion->prepare($update);
+        try {
+            $stmt->execute([
+                ':i' => $this->id,
+                ':n' => $this->nombre,
+                ':nc' => $this->nombre_corto,
+                ':p' => $this->pvp,
+                ':f' => $this->familia,
+                ':d' => $this->descripcion
+            ]);
+        } catch (PDOException $ex) {
+            die("Ocurrio un error al actualizar el producto: " . $ex->getMessage());
+        }
     }
 
-    public function getNombre(): string
+    // 4.- Delete
+    function delete()
     {
-        return $this->nombre;
+        $borrar = "delete from productos where id=:i";
+        $stmt = $this->conexion->prepare($borrar);
+        try {
+            $stmt->execute([':i' => $this->id]);
+        } catch (PDOException $ex) {
+            die("Ocurrio un error al borrar el producto: " . $ex->getMessage());
+        }
+    }
+    // Otros métodos de utilidad
+
+    // 1.- recuperarProductos
+    function recuperarProductos()
+    {
+        $consulta = "select * from productos order by nombre";
+        $stmt = $this->conexion->prepare($consulta);
+        try {
+            $stmt->execute();
+        } catch (PDOException $ex) {
+            die("Error al recuperar productos: " . $ex->getMessage());
+        }
+        return $stmt;
     }
 
-    public function getNombreCorto(): string
+    // 2.- Para comprobar si el nombre_corto ya existe ya que tiene el atributo unique 
+    //     Es diferente para el create y el update en el create buscamos en todos los valores
+    //     En el update en todos menos el del producto que vamos a actualizar
+    function existeNombreCorto($nc)
     {
-        return $this->nombre_corto;
+        if ($this->id == null) {
+            $consulta = "select * from productos where nombre_corto=:nc";
+        } else {
+            $consulta = "select * from productos where nombre_corto = :nc AND id != :i";
+        }
+        $stmt = $this->conexion->prepare($consulta);
+        try {
+            if ($this->id == null)
+                $stmt->execute([':nc' => $nc]);
+            else
+                $stmt->execute([':nc' => $nc, ':i' => $this->id]);
+        } catch (PDOException $ex) {
+            die("Error al comprobar el nombre corto: " . $ex->getMessage());
+        }
+        if ($stmt->rowCount() == 0) return false; //No existe
+        return true; //existe
+
+    }
+    
+    /* Tarea 6:
+    3.- getPVP
+    */
+    public function getPVP() {
+        $consulta = "SELECT pvp FROM productos WHERE id = :codigo";
+        $stmt = $this->conexion->prepare($consulta);
+        try {
+            $stmt->execute([':codigo' => $this->id]);
+            $resultado = $stmt->fetch(PDO::FETCH_OBJ);
+            return $resultado ? $resultado->pvp : 0.0;
+        } catch (PDOException $ex) {
+            throw new PDOException("Error al recuperar el PVP: " . $ex->getMessage());
+        }
     }
 
-    public function getPvp(): float
-    {
-        return $this->pvp;
-    }
+    /*
+    4.- recuperarProductosPorFamilia
+    */
+    public function getProductosPorFamilia() {
+        $consulta = "SELECT id FROM productos WHERE familia = :cod_familia";
+        $stmt = $this->conexion->prepare($consulta);
 
-    public function getFamilia(): string
-    {
-        return $this->familia;
-    }
-
-    public function getDescripcion(): string
-    {
-        return $this->descripcion;
-    }
-
-    // Setters
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
-
-    public function setNombre(string $nombre): void
-    {
-        $this->nombre = $nombre;
-    }
-
-    public function setNombreCorto(string $nombre_corto): void
-    {
-        $this->nombre_corto = $nombre_corto;
-    }
-
-    public function setPvp(float $pvp): void
-    {
-        $this->pvp = $pvp;
-    }
-
-    public function setFamilia(string $familia): void
-    {
-        $this->familia = $familia;
-    }
-
-    public function setDescripcion(string $descripcion): void
-    {
-        $this->descripcion = $descripcion;
+        try {
+            $stmt->execute([':cod_familia' => $this->familia]);
+            return $stmt->fetchAll(PDO::FETCH_COLUMN);
+        } catch (PDOException $ex) {
+            throw new PDOException("Error al recuperar productos de la familia: " . $ex->getMessage());
+        }
     }
 }

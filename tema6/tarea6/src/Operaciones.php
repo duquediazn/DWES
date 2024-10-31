@@ -34,13 +34,9 @@ class Operaciones extends Conexion {
      * @return float 
      */
     public function getPVP(int $codigo) : float {
-        $consulta = "SELECT pvp FROM productos WHERE id = :codigo";
-        $stmt = $this->conexion->prepare($consulta);
-        
         try {
-            $stmt->execute([':codigo' => $codigo]);
-            $resultado = $stmt->fetch(PDO::FETCH_OBJ);
-            return $resultado ? (float) $resultado->pvp : 0.0;
+            $producto = new Producto($codigo);
+            return $producto ? (float) $producto->getPvp() : 0.0;
         } catch (PDOException $ex) {
             throw new PDOException("Error al recuperar el PVP: " . $ex->getMessage());
         }
@@ -58,16 +54,9 @@ class Operaciones extends Conexion {
      * @return int 
      */
     public function getStock(int $cod_producto, int $cod_tienda) : int {
-        $consulta = "SELECT unidades FROM stocks WHERE producto = :cod_producto AND tienda = :cod_tienda";
-        $stmt = $this->conexion->prepare($consulta);
-
         try {
-            $stmt->execute([
-                ':cod_producto' => $cod_producto,
-                ':cod_tienda' => $cod_tienda
-            ]);
-            $resultado = $stmt->fetch(PDO::FETCH_OBJ);
-            return $resultado ? (int) $resultado->unidades : 0;
+            $stock = new Stock($cod_producto,$cod_tienda);
+            return $stock ? (int) $stock->getUnidades() : 0;
         } catch (PDOException $ex) {
             throw new PDOException("Error al recuperar el stock: " . $ex->getMessage());
         }
@@ -82,12 +71,9 @@ class Operaciones extends Conexion {
      * @return array 
      */
     public function getFamilias() : array {
-        $consulta = "SELECT cod FROM familias";
-        $stmt = $this->conexion->prepare($consulta);
-
         try {
-            $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_COLUMN);
+            $familias = (new Familia())->getFamilias();
+            return $familias;
         } catch (PDOException $ex) {
             throw new PDOException("Error al recuperar las familias: " . $ex->getMessage());
         }
@@ -103,12 +89,12 @@ class Operaciones extends Conexion {
      * @return array 
      */
     public function getProductosFamilia(string $cod_familia) : array {
-        $consulta = "SELECT id FROM productos WHERE familia = :cod_familia";
-        $stmt = $this->conexion->prepare($consulta);
-
         try {
-            $stmt->execute([':cod_familia' => $cod_familia]);
-            return $stmt->fetchAll(PDO::FETCH_COLUMN);
+            $producto = new Producto();
+            $producto->setFamilia($cod_familia);
+            $productos=$producto->getProductosFamilia();
+            echo var_dump($productos);
+            return $productos;
         } catch (PDOException $ex) {
             throw new PDOException("Error al recuperar productos de la familia: " . $ex->getMessage());
         }

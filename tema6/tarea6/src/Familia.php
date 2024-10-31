@@ -2,16 +2,41 @@
 
 namespace Clases;
 
-class Familia
+use PDO;
+use PDOException;
+
+class Familia extends Conexion
 {
     private string $cod;
     private string $nombre;
 
     // Constructor con valores por defecto
-    public function __construct(string $cod = '', string $nombre = '')
+    public function __construct()
     {
-        $this->cod = $cod;
-        $this->nombre = $nombre;
+        parent::__construct();
+    }
+
+    public function getFamilias() : array {
+        $consulta = "SELECT cod FROM familias";
+        $stmt = $this->conexion->prepare($consulta);
+        try {
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_COLUMN);
+        } catch (PDOException $ex) {
+            throw new PDOException("Error al recuperar las familias: " . $ex->getMessage());
+        }
+    }
+
+    public function recuperarFamilias()
+    {
+        $consulta = "select * from familias order by nombre";
+        $stmt = $this->conexion->prepare($consulta);
+        try {
+            $stmt->execute();
+        } catch (PDOException $ex) {
+            die("Error al recuperar: " . $ex->getMessage());
+        }
+        return $stmt;
     }
 
     // Getters

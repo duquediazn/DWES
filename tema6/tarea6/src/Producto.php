@@ -14,18 +14,33 @@ class Producto extends Conexion
     private string $familia;
     private string $descripcion;
 
-    // Constructor con valores por defecto
-    public function __construct(int $id)
+    //Constructor:
+    public function __construct(int $id=0)
     {
+        parent::__construct();
+
         $this->id = $id;
+        if ($id != 0) {
 
-        $taca = $this->read();
+            $taca = $this->read()[0];
 
-        $this->nombre = $taca->nombre;
-        $this->nombre_corto = $taca->nombre_corto;
-        $this->descripcion = $taca->descripcion;
-        $this->pvp = $taca->pvp;
-        $this->familia = $taca->familia;
+            $this->nombre = $taca->nombre;
+            $this->nombre_corto = $taca->nombre_corto;
+            $this->descripcion = $taca->descripcion;
+            $this->pvp = $taca->pvp;
+            $this->familia = $taca->familia;
+        }
+    }
+
+    public function getProductosFamilia() {
+        $consulta = "SELECT id FROM productos WHERE familia = :cod_familia";
+        $stmt = $this->conexion->prepare($consulta);
+        try {
+            $stmt->execute([':cod_familia' => $this->familia]);
+            return $stmt->fetchAll(PDO::FETCH_COLUMN);
+        } catch (PDOException $ex) {
+            throw new PDOException("Error al recuperar productos de la familia: " . $ex->getMessage());
+        }
     }
 
     // 2.- Read ------------
@@ -38,7 +53,7 @@ class Producto extends Conexion
         } catch (PDOException $ex) {
             die("Error al recuperar el producto: " . $ex->getMessage());
         }
-        return $stmt->fetchAll(PDO::FETCH_OBJ); //Devolvemos con All sólo es una fila
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
     // Getters

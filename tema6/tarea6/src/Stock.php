@@ -2,17 +2,42 @@
 
 namespace Clases;
 
-class Stock {
+use PDO;
+use PDOException;
+
+class Stock extends Conexion {
     private int $producto; 
     private int $tienda;  
     private int $unidades; 
 
     // Constructor con valores por defecto
-    public function __construct(int $producto = 0, int $tienda = 0, int $unidades = 0) {
+    public function __construct(int $producto, int $tienda) {
+
+        parent::__construct();
+
         $this->producto = $producto;
         $this->tienda = $tienda;
-        $this->unidades = $unidades;
+
+        $taca = $this->read()[0];
+
+        $this->unidades = $taca->unidades;
     }
+
+    function read()
+    {
+        $consulta = "select * from stocks WHERE producto = :cod_producto AND tienda = :cod_tienda";
+        $stmt = $this->conexion->prepare($consulta);
+        try {
+            $stmt->execute([
+                ':cod_producto' => $this->producto,
+                ':cod_tienda' => $this->tienda
+            ]);
+        } catch (PDOException $ex) {
+            die("Error al recuperar el stock: " . $ex->getMessage());
+        }
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
 
     // Getters
     public function getProducto(): int {

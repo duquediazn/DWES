@@ -168,7 +168,7 @@ class Producto extends Conexion
     }
 
     /*
-    4.- recuperarProductosPorFamilia
+    4.- getProductosPorFamilia
     */
     public function getProductosPorFamilia() {
         $consulta = "SELECT id FROM productos WHERE familia = :cod_familia";

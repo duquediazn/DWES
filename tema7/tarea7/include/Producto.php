@@ -1,5 +1,5 @@
 <?php
-require 'Conexion.php';
+require_once 'Conexion.php';
 
 class Producto extends Conexion
 {
@@ -124,9 +124,10 @@ class Producto extends Conexion
         $stmt = self::$conexion->prepare($consulta);
         try {
             $stmt->execute();
+            $productos = $stmt->fetchAll(PDO::FETCH_OBJ);
         } catch (\PDOException $ex) {
             die("Error al recuperar los productos" . $ex->getMessage());
         }
-        return $stmt;
+        return $productos;
     }
 }

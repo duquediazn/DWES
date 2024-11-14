@@ -1,13 +1,20 @@
 <?php
+// Configuración para mostrar errores (en desarrollo)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 if (!isset($_SESSION['usu'])) {
   header('Location:login.php');
   die();
 }
 require './include/Producto.php';
-$productos = new Producto();
-$todos = $productos->listadoProductos();
+require './include/Votos.php';
 
+$productos = new Producto();
+$aProductos = $productos->listadoProductos();
+$votos = new Votos();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,13 +29,13 @@ $todos = $productos->listadoProductos();
   <title>Productos</title>
 </head>
 
-<body style="background:gainsboro">
+<body style="background:#00bfa5;">
   <div class="float float-right d-inline-flex mt-2">
 
 
     <i class="fas fa-user mr-3 fa-2x"></i>
     <input type="text" size='10px' value="<?php echo $_SESSION['usu']; ?>" class="form-control
-    mr-2 bg-transparent text-info font-weight-bold" disabled>
+    mr-2 bg-transparent text-white font-weight-bold" disabled>
     <a href="cerrar.php" class="btn btn-warning mr-2">Salir</a>
   </div>
   <br>
@@ -39,32 +46,24 @@ $todos = $productos->listadoProductos();
         <tr class='text-center'>
           <th scope="col">Código</th>
           <th scope="col">Nombre</th>
-          <th scope="col">Nombre Corto</th>
-          <th scope="col">Precio (€)</th>
-          <th scope="col">Familia</th>
+          <th scope="col">Valoración</th>
+          <th scope="col">Valorar</th>
         </tr>
       </thead>
       <tbody>
         <?php
-        while ($item = $todos->fetch(PDO::FETCH_OBJ)) {
-          echo <<< FIN
+        foreach ($aProductos as $producto) {
+          echo "
             <tr class='text-center'>
-            <th scope='row'>{$item->id}</th>
-            <td>{$item->nombre}</td>
-            <td>{$item->nombre_corto}</td>
-            <td>{$item->pvp}</td>
-            <td>{$item->familia}</td>
-            </tr>
-        FIN;
+            <th scope='row'>{$producto->id}</th>
+            <td>{$producto->nombre}</td>";
+            if ($votos->numVotos($producto->id)) {
+              echo "<td>{$votos->numVotos($producto->id)} Valoraciones. Media: {$votos->mediaVotosProducto()}</td>";
+            } else {
+              echo "<td>Sin valorar</td>";
+            }
+            echo "<td></td>";
         }
-        /*
-         echo <<< FIN ... FIN;: 
-         Aquí se está utilizando una característica de PHP llamada "heredoc" para escribir grandes bloques de texto 
-         (en este caso, el HTML de las filas de la tabla) de forma más legible.
-         Heredoc es una sintaxis especial en PHP para manejar cadenas de texto largas. 
-         Empieza con <<< seguido de un identificador (FIN en este caso), y termina con el mismo identificador en una 
-         línea propia (FIN;), sin necesidad de comillas.
-        */
         ?>
       </tbody>
     </table>

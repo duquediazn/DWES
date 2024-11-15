@@ -1,44 +1,28 @@
 <?php
+// Configuración para mostrar errores (en desarrollo)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require './include/Votos.php';
 session_start();
 
 if (!isset($_SESSION['usu'])) {
-    echo json_encode(['error' => 'Usuario no autenticado']);
-    exit;
-}
+    header('Location:login.php');
+    exit();
+  }
 
 $idProducto = $_POST['idProducto'];
-$cantidad = $_POST['cantidad'];
+$cantidad= $_POST['valoracion'];
 $idUsuario = $_SESSION['usu'];
 
 $votos = new Votos();
-$valoracion = $votos->miVoto($idProducto, $idUsuario, $cantidad);
+$resultado=$votos->miVoto($cantidad, $idProducto, $idUsuario);
 
-if ($valoracion === false) {
-    echo json_encode(['error' => 'Ya has valorado este producto']);
-} else {
-    // Obtener los datos actualizados de valoración
-    $estrellas = $votos->pintarEstrellas($idProducto);
-}
+if(!$resultado) {
+    $_SESSION["mensaje"] = "Ya has valorado este producto";
+} 
 
-function pintarEstrellasHTML($numVotos, $media) {
-    $html = "<div>{$numVotos} Valoraciones. ";
-
-    // Pintamos las estrellas completas
-    for ($i = 1; $i <= floor($media); $i++) {
-        $html .= '<i class="fa fa-star"></i>';
-    }
-    // Pintamos media estrella si corresponde
-    if ($media - floor($media) >= 0.5) {
-        $html .= '<i class="fa fa-star-half-alt"></i>';
-    }
-    // Completamos con estrellas vacías hasta 5
-    for ($i = ceil($media); $i < 5; $i++) {
-        $html .= '<i class="fa fa-star-o"></i>';
-    }
-
-    $html .= "</div>";
-    return $html;
-}
-
-echo pintarEstrellasHTML($estrellas['num_votos'], $estrellas['media']);
+// Redirige de vuelta a la página de listado
+header("Location: listado.php");
+exit();

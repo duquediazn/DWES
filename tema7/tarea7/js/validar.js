@@ -4,7 +4,7 @@ function envForm() {
 
     // Llamada AJAX con jQuery
     $.ajax({
-        url: 'include/Validar.php', // Archivo PHP para la validación
+        url: 'validar.php', // Archivo PHP para la validación
         type: 'POST',
         data: {
             usu: usu,

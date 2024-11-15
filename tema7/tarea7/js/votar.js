@@ -3,7 +3,7 @@ function votarProducto(idProducto, idUsuario) {
     var cantidad = document.getElementById("cantidad_" + idProducto).value;
 
     $.ajax({
-        url: 'ajax_votar.php',
+        url: 'votar.php',
         type: 'POST',
         data: {
             idProducto: idProducto,

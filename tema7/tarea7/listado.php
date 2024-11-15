@@ -14,6 +14,7 @@ require './include/Votos.php';
 
 $productos = new Producto();
 $aProductos = $productos->listadoProductos();
+
 $votos = new Votos();
 ?>
 <!DOCTYPE html>
@@ -40,6 +41,16 @@ $votos = new Votos();
   </div>
   <br>
   <h4 class="container text-center mt-4 font-weight-bold">Productos onLine</h4>
+
+  <?php if(isset($_SESSION["mensaje"])) { ?>
+    <div class="alert alert-warning container container-md mb-2">
+      <?php
+        echo $_SESSION["mensaje"];
+        unset($_SESSION["mensaje"]);
+      ?>
+    </div>
+  <?php } ?>
+
   <div class="container mt-3">
     <table class="table table-striped table-dark">
       <thead>
@@ -53,16 +64,38 @@ $votos = new Votos();
       <tbody>
         <?php
         foreach ($aProductos as $producto) {
+          $idProducto=$producto->id;
+          $nombreProducto=$producto->nombre;
+          $estrellasData=$votos->pintarEstrellas($idProducto);
+          $votantes=$votos->numVotos($idProducto);
           echo "
             <tr class='text-center'>
-            <th scope='row'>{$producto->id}</th>
-            <td>{$producto->nombre}</td>";
-            if ($votos->numVotos($producto->id)) {
-              echo "<td>{$votos->numVotos($producto->id)} Valoraciones. Media: {$votos->mediaVotosProducto()}</td>";
+            <th scope='row'>{$idProducto}</th>
+            <td>{$nombreProducto}</td>";
+            if ($votantes) {
+              echo "<td>{$votantes} Valoraciones.";
+                for ($i = 0; $i < $estrellasData['estrellas']; $i++) {
+                  echo '<i class="fas fa-star"></i>';
+                }
+                if ($estrellasData['halfStar']) {
+                  echo '<i class="fas fa-star-half-alt"></i>';
+                }   
             } else {
               echo "<td>Sin valorar</td>";
             }
-            echo "<td></td>";
+            echo "<td>
+                    <form class='d-inline-flex align-items-center' name='formVotar' id='formVotar' method='POST' action='votar.php'>
+                      <select class='form-control mr-2' name='valoracion' id='valoracion-{$idProducto}'>
+                          <option value='1'>1</option>
+                          <option value='2'>2</option>
+                          <option value='3'>3</option>
+                          <option value='4'>4</option>
+                          <option value='5'>5</option>
+                      </select>
+                      <input type='hidden' name='idProducto' value='{$idProducto}'>
+                      <button class='btn btn-info mt-1 votar-btn'>Votar</button>
+                    </form>
+                </td>";
         }
         ?>
       </tbody>

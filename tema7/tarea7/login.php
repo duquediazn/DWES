@@ -17,7 +17,7 @@ error_reporting(E_ALL);
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <title>Formulario de Registro</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="validar.js"></script>
+    <script type="text/javascript" src="js/validar.js"></script>
 </head>
 
 <body style="background:#00bfa5;">

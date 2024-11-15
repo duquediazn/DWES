@@ -20,9 +20,26 @@ $votos = new Votos();
 $resultado=$votos->miVoto($cantidad, $idProducto, $idUsuario);
 
 if(!$resultado) {
-    $_SESSION["mensaje"] = "Ya has valorado este producto";
+    //$_SESSION["mensaje"] = "Ya has valorado este producto";
+    echo json_encode(['status' => 'error', 'message' => 'Ya has valorado este producto.']);
+    exit();
 } 
 
+// Obtener el número de votos y las estrellas actualizadas
+$numVotos = $votos->numVotos($idProducto);
+$estrellasData = $votos->pintarEstrellas($idProducto);
+
+// Devolver la respuesta como un JSON
+echo json_encode([
+    'status' => 'success',
+    'numVotos' => $numVotos,
+    'estrellas' => $estrellasData['estrellas'],
+    'halfStar' => $estrellasData['halfStar']
+]);
+
 // Redirige de vuelta a la página de listado
-header("Location: listado.php");
+//header("Location: listado.php");
 exit();
+
+
+

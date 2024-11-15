@@ -28,6 +28,8 @@ $votos = new Votos();
   <!--Fontawesome CDN-->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
   <title>Productos</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript" src="js/votar.js"></script>
 </head>
 
 <body style="background:#00bfa5;">
@@ -62,42 +64,45 @@ $votos = new Votos();
         </tr>
       </thead>
       <tbody>
-        <?php
+      <?php
         foreach ($aProductos as $producto) {
-          $idProducto=$producto->id;
-          $nombreProducto=$producto->nombre;
-          $estrellasData=$votos->pintarEstrellas($idProducto);
-          $votantes=$votos->numVotos($idProducto);
-          echo "
-            <tr class='text-center'>
-            <th scope='row'>{$idProducto}</th>
-            <td>{$nombreProducto}</td>";
-            if ($votantes) {
-              echo "<td>{$votantes} Valoraciones.";
-                for ($i = 0; $i < $estrellasData['estrellas']; $i++) {
-                  echo '<i class="fas fa-star"></i>';
-                }
-                if ($estrellasData['halfStar']) {
-                  echo '<i class="fas fa-star-half-alt"></i>';
-                }   
-            } else {
-              echo "<td>Sin valorar</td>";
-            }
-            echo "<td>
-                    <form class='d-inline-flex align-items-center' name='formVotar' id='formVotar' method='POST' action='votar.php'>
-                      <select class='form-control mr-2' name='valoracion' id='valoracion-{$idProducto}'>
-                          <option value='1'>1</option>
-                          <option value='2'>2</option>
-                          <option value='3'>3</option>
-                          <option value='4'>4</option>
-                          <option value='5'>5</option>
-                      </select>
-                      <input type='hidden' name='idProducto' value='{$idProducto}'>
-                      <button class='btn btn-info mt-1 votar-btn'>Votar</button>
-                    </form>
-                </td>";
-        }
+          $idProducto = $producto->id;
+          $nombreProducto = $producto->nombre;
+          $estrellasData = $votos->pintarEstrellas($idProducto);
+          $votantes = $votos->numVotos($idProducto);
         ?>
+        <tr class="text-center" data-idproducto="<?php echo $idProducto; ?>">
+          <th scope="row"><?php echo $idProducto; ?></th>
+          <td><?php echo $nombreProducto; ?></td>
+          <td class="num-votos"><?php echo $votantes ? "{$votantes} Valoraciones." : "Sin valorar"; ?>
+              <span class="estrellas">
+                  <?php 
+                      if ($votantes) {
+                          for ($i = 0; $i < $estrellasData['estrellas']; $i++) {
+                              echo '<i class="fas fa-star"></i>';
+                          }
+                          if ($estrellasData['halfStar']) {
+                              echo '<i class="fas fa-star-half-alt"></i>';
+                          }
+                      }
+                  ?>
+              </span>
+          </td>
+          <td>
+            <form class="d-inline-flex align-items-center" id="formVotar-<?php echo $idProducto; ?>" method="POST" action="votar.php">
+                <select class="form-control mr-2" name="valoracion" id="valoracion-<?php echo $idProducto; ?>">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <input type="hidden" name="idProducto" value="<?php echo $idProducto; ?>">
+                <button class="btn btn-info mt-1 votar-btn">Votar</button>
+            </form>
+          </td>
+        </tr>
+        <?php } ?>
       </tbody>
     </table>
 </body>

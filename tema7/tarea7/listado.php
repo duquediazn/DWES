@@ -71,7 +71,7 @@ $votos = new Votos();
           $estrellasData = $votos->pintarEstrellas($idProducto);
           $votantes = $votos->numVotos($idProducto);
         ?>
-        <tr class="text-center" data-idproducto="<?php echo $idProducto; ?>">
+        <tr class="text-center" id="<?php echo $idProducto; ?>">
           <th scope="row"><?php echo $idProducto; ?></th>
           <td><?php echo $nombreProducto; ?></td>
           <td>

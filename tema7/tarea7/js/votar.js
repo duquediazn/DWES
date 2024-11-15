@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(document).ready(function () {//Cuando se cargue el DOM
     // Interceptar el evento de envío del formulario específico
     $('form[id^="formVotar-"]').submit(function (event) {
         event.preventDefault(); // Evitar que el formulario se envíe de forma tradicional
@@ -16,7 +16,7 @@ $(document).ready(function () {
                 valoracion: valoracion
             },
             dataType: 'json', // Especificamos que esperamos una respuesta en formato JSON
-            success: function (response) {
+            success: function (response) {//Solicitud AJAX exitosa
                 // Procesamos la respuesta del servidor
                 if (response.status === "error") {
                     alert(response.message); // Mostrar el mensaje de error
@@ -24,10 +24,11 @@ $(document).ready(function () {
                     // Actualizar las estrellas y el número de valoraciones
                     actualizarValoracion(idProducto, response.numVotos, response.estrellas, response.halfStar);
                 } else {
+                    //Si la respuesta no tiene un estado esperado, se muestra un mensaje genérico de error.
                     alert("Hubo un error al procesar tu voto.");
                 }
             },
-            error: function () {
+            error: function () {//Solicitud AJAX fallida
                 alert("Hubo un error en la conexión con el servidor.");
             }
         });
@@ -35,7 +36,7 @@ $(document).ready(function () {
 });
 
 function actualizarValoracion(idProducto, numVotos, estrellas, halfStar) {
-    const fila = $("tr[data-idproducto='" + idProducto + "']");
+    const fila = $("tr[id='" + idProducto + "']");
     let estrellasContenedor = fila.find('.estrellas');
 
     // Actualizar el número de valoraciones

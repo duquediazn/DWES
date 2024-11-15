@@ -74,19 +74,20 @@ $votos = new Votos();
         <tr class="text-center" data-idproducto="<?php echo $idProducto; ?>">
           <th scope="row"><?php echo $idProducto; ?></th>
           <td><?php echo $nombreProducto; ?></td>
-          <td class="num-votos"><?php echo $votantes ? "{$votantes} Valoraciones." : "Sin valorar"; ?>
-              <span class="estrellas">
-                  <?php 
-                      if ($votantes) {
-                          for ($i = 0; $i < $estrellasData['estrellas']; $i++) {
-                              echo '<i class="fas fa-star"></i>';
-                          }
-                          if ($estrellasData['halfStar']) {
-                              echo '<i class="fas fa-star-half-alt"></i>';
-                          }
-                      }
-                  ?>
-              </span>
+          <td>
+            <p class="num-votos"><?php echo $votantes ? "{$votantes} Valoraciones." : "Sin valorar"; ?></p>
+            <span class="estrellas">
+                <?php 
+                    if ($votantes) {
+                        for ($i = 0; $i < $estrellasData['estrellas']; $i++) {
+                            echo '<i class="fas fa-star"></i>';
+                        }
+                        if ($estrellasData['halfStar']) {
+                            echo '<i class="fas fa-star-half-alt"></i>';
+                        }
+                    }
+                ?>
+            </span>
           </td>
           <td>
             <form class="d-inline-flex align-items-center" id="formVotar-<?php echo $idProducto; ?>" method="POST" action="votar.php">

@@ -21,7 +21,6 @@ $(document).ready(function () {
                 if (response.status === "error") {
                     alert(response.message); // Mostrar el mensaje de error
                 } else if (response.status === "success") {
-                    //alert("Gracias por tu valoración.");
                     // Actualizar las estrellas y el número de valoraciones
                     actualizarValoracion(idProducto, response.numVotos, response.estrellas, response.halfStar);
                 } else {
@@ -38,15 +37,17 @@ $(document).ready(function () {
 function actualizarValoracion(idProducto, numVotos, estrellas, halfStar) {
     const fila = $("tr[data-idproducto='" + idProducto + "']");
     let estrellasContenedor = fila.find('.estrellas');
-    
+
     // Actualizar el número de valoraciones
     let numVotosCell = fila.find('.num-votos');
     numVotosCell.text(numVotos + " Valoraciones.");
 
     // Actualizar las estrellas
+    estrellasContenedor.empty();
     for (let i = 0; i < estrellas; i++) {
         estrellasContenedor.append('<i class="fas fa-star"></i>');
     }
+
     if (halfStar) {
         estrellasContenedor.append('<i class="fas fa-star-half-alt"></i>');
     }

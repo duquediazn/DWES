@@ -44,11 +44,11 @@ $votos = new Votos();
   <br>
   <h4 class="container text-center mt-4 font-weight-bold">Productos onLine</h4>
 
-  <?php if(isset($_SESSION["mensaje"])) { ?>
+  <?php if (isset($_SESSION["mensaje"])) { ?>
     <div class="alert alert-warning container container-md mb-2">
       <?php
-        echo $_SESSION["mensaje"];
-        unset($_SESSION["mensaje"]);
+      echo $_SESSION["mensaje"];
+      unset($_SESSION["mensaje"]);
       ?>
     </div>
   <?php } ?>
@@ -64,45 +64,45 @@ $votos = new Votos();
         </tr>
       </thead>
       <tbody>
-      <?php
+        <?php
         foreach ($aProductos as $producto) {
           $idProducto = $producto->id;
           $nombreProducto = $producto->nombre;
           $estrellasData = $votos->pintarEstrellas($idProducto);
           $votantes = $votos->numVotos($idProducto);
         ?>
-        <tr class="text-center" id="<?php echo $idProducto; ?>">
-          <th scope="row"><?php echo $idProducto; ?></th>
-          <td><?php echo $nombreProducto; ?></td>
-          <td>
-            <p class="num-votos"><?php echo $votantes ? "{$votantes} Valoraciones." : "Sin valorar"; ?></p>
-            <span class="estrellas">
-                <?php 
-                    if ($votantes) {
-                        for ($i = 0; $i < $estrellasData['estrellas']; $i++) {
-                            echo '<i class="fas fa-star"></i>';
-                        }
-                        if ($estrellasData['halfStar']) {
-                            echo '<i class="fas fa-star-half-alt"></i>';
-                        }
-                    }
+          <tr class="text-center" id="<?php echo $idProducto; ?>">
+            <th scope="row"><?php echo $idProducto; ?></th>
+            <td><?php echo $nombreProducto; ?></td>
+            <td>
+              <p class="num-votos"><?php echo $votantes ? "{$votantes} Valoraciones." : "Sin valorar"; ?></p>
+              <span class="estrellas">
+                <?php
+                if ($votantes) {
+                  for ($i = 0; $i < $estrellasData['estrellas']; $i++) {
+                    echo '<i class="fas fa-star"></i>';
+                  }
+                  if ($estrellasData['halfStar']) {
+                    echo '<i class="fas fa-star-half-alt"></i>';
+                  }
+                }
                 ?>
-            </span>
-          </td>
-          <td>
-            <form class="d-inline-flex align-items-center" id="formVotar-<?php echo $idProducto; ?>" method="POST" action="votar.php">
+              </span>
+            </td>
+            <td>
+              <form class="d-inline-flex align-items-center" id="formVotar-<?php echo $idProducto; ?>" method="POST" action="votar.php">
                 <select class="form-control mr-2" name="valoracion" id="valoracion-<?php echo $idProducto; ?>">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
                 </select>
                 <input type="hidden" name="idProducto" value="<?php echo $idProducto; ?>">
                 <button class="btn btn-info mt-1 votar-btn">Votar</button>
-            </form>
-          </td>
-        </tr>
+              </form>
+            </td>
+          </tr>
         <?php } ?>
       </tbody>
     </table>

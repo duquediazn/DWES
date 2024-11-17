@@ -1,7 +1,8 @@
 <?php
 require_once 'Conexion.php';
 
-class Votos extends Conexion {
+class Votos extends Conexion
+{
 
     private $id;
     private $cantidad;
@@ -57,7 +58,8 @@ class Votos extends Conexion {
     }
 
     //Insert en la tabla Votos
-    public function miVoto($cantidad, $idPr, $idUs){
+    public function miVoto($cantidad, $idPr, $idUs)
+    {
         if ($this->verificarVoto($idPr, $idUs)) {
             $consulta = "insert into votos (cantidad, idPr, idUs) values (:valoracion, :id_producto, :id_usuario)";
             $stmt = self::$conexion->prepare($consulta);
@@ -77,12 +79,13 @@ class Votos extends Conexion {
     }
 
     //Número de votos de un producto (cuántos usuarios lo han votado)
-    public function numVotos($idProducto) {
+    public function numVotos($idProducto)
+    {
         $consulta = "SELECT COUNT(*) AS num_votos FROM votos WHERE idPr = :id_producto";
         $stmt = self::$conexion->prepare($consulta);
         try {
             $stmt->execute([':id_producto' => $idProducto]);
-            $numVotos=$stmt->fetch(PDO::FETCH_OBJ);
+            $numVotos = $stmt->fetch(PDO::FETCH_OBJ);
         } catch (\PDOException $ex) {
             die("Error al contar el número de votos" . $ex->getMessage());
         }
@@ -104,39 +107,36 @@ class Votos extends Conexion {
     }
 
     //Verifica si un usuario ha votado por un producto
-    public function verificarVoto($idPr, $idUs){
+    public function verificarVoto($idPr, $idUs)
+    {
         $consulta = "SELECT COUNT(*) AS votos FROM votos WHERE idPr = :id_producto AND idUs = :id_usuario";
         $stmt = self::$conexion->prepare($consulta);
         try {
             $stmt->execute([
-                ':id_producto' => $idPr, 
+                ':id_producto' => $idPr,
                 ':id_usuario' => $idUs
             ]);
             $resultado = $stmt->fetch(PDO::FETCH_OBJ);
 
-            if ($resultado->votos > 0) {
-                // El usuario ya ha votado, devolvemos false
-                return false;
-            } else {
-                return true;
-            }
+            return ($resultado->votos > 0); // El usuario ya ha votado, devolvemos false
+
         } catch (\PDOException $ex) {
             die("Error al verificar los votos" . $ex->getMessage());
         }
     }
 
     //Pintar estrellas
-    public function pintarEstrellas($idPr) {
+    public function pintarEstrellas($idPr)
+    {
         $media = $this->mediaVotosProducto($idPr);
-    
+
         $estrellas = floor($media);
         $mediaDecimal = $media - $estrellas;
         $halfStar = ($mediaDecimal >= 0.5) ? true : false;
-    
+
         return [
             'estrellas' => $estrellas,
             'halfStar' => $halfStar
         ];
     }
-
 }

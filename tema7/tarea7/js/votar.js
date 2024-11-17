@@ -2,7 +2,7 @@ $(document).ready(function () {//Cuando se cargue el DOM
     // Interceptar el evento de envío del formulario específico
     $('form[id^="formVotar-"]').submit(function (event) {
         event.preventDefault(); // Evitar que el formulario se envíe de forma tradicional
-        
+
         // Obtener los valores del formulario
         const idProducto = $(this).find('input[name="idProducto"]').val();
         const valoracion = $(this).find('select[name="valoracion"]').val();
@@ -11,7 +11,7 @@ $(document).ready(function () {//Cuando se cargue el DOM
         $.ajax({
             url: 'votar.php', // Archivo PHP que procesará la votación
             type: 'POST', // Método de la solicitud
-            data: { 
+            data: {
                 idProducto: idProducto,
                 valoracion: valoracion
             },

@@ -1,9 +1,4 @@
 <?php
-// Configuración para mostrar errores (en desarrollo)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 require './include/Votos.php';
 session_start();
 

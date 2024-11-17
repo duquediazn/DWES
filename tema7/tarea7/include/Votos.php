@@ -15,68 +15,39 @@ class Votos extends Conexion
         parent::__construct();
     }
 
-    //Getters
-    public function getId()
-    {
-        return $this->id;
-    }
+    // Getters y Setters
+    public function getId() { return $this->id; }
+    public function getCantidad() { return $this->cantidad; }
+    public function getIdPr() { return $this->idPr; }
+    public function getIdUs() { return $this->idUs; }
 
-    public function getCantidad()
-    {
-        return $this->cantidad;
-    }
-
-    public function getIdPr()
-    {
-        return $this->idPr;
-    }
-
-    public function getIdUs()
-    {
-        return $this->idUs;
-    }
-
-    //Setters
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    public function setCantidad($cantidad)
-    {
-        $this->cantidad = $cantidad;
-    }
-
-    public function setIdPr($idPr)
-    {
-        $this->idPr = $idPr;
-    }
-
-    public function setIdUs($idUs)
-    {
-        $this->idUs = $idUs;
-    }
+    public function setId($id) { $this->id = $id; }
+    public function setCantidad($cantidad) { $this->cantidad = $cantidad; }
+    public function setIdPr($idPr) { $this->idPr = $idPr; }
+    public function setIdUs($idUs) { $this->idUs = $idUs; }
 
     //Insert en la tabla Votos
     public function miVoto($cantidad, $idPr, $idUs)
     {
         if ($this->verificarVoto($idPr, $idUs)) {
-            $consulta = "insert into votos (cantidad, idPr, idUs) values (:valoracion, :id_producto, :id_usuario)";
-            $stmt = self::$conexion->prepare($consulta);
-            try {
-                $stmt->execute([
-                    ':valoracion' => $cantidad,
-                    ':id_producto' =>  $idPr,
-                    ':id_usuario' => $idUs
-                ]);
-            } catch (\PDOException $ex) {
-                die("Error al crear voto" . $ex->getMessage());
-            }
-        } else {
-            return false;
+            return false; // El usuario ya ha votado
         }
+        
+        $consulta = "INSERT INTO votos (cantidad, idPr, idUs) VALUES (:cantidad, :idPr, :idUs)";
+        $stmt = self::$conexion->prepare($consulta);
+        try {
+            $stmt->execute([
+                ':cantidad' => $cantidad,
+                ':idPr' => $idPr,
+                ':idUs' => $idUs
+            ]);
+        } catch (\PDOException $ex) {
+            die("Error al crear voto: " . $ex->getMessage());
+        }
+        
         return $this->mediaVotosProducto($idPr);
     }
+
 
     //Número de votos de un producto (cuántos usuarios lo han votado)
     public function numVotos($idProducto)

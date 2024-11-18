@@ -1,0 +1,215 @@
+<h2>Explicación Detallada del Uso de Fetch API en el Proyecto</h2>
+
+<h3>1. ¿Qué es Fetch API?</h3>
+
+<p>
+    Fetch API es una interfaz moderna en JavaScript que permite realizar solicitudes HTTP (GET, POST, PUT, DELETE, etc.) de forma asíncrona.
+    Es una alternativa más sencilla y potente que <code>XMLHttpRequest</code>, que se utilizaba anteriormente para realizar solicitudes AJAX.
+    Fetch API se basa en <strong>promesas</strong>, lo que facilita el manejo de resultados y errores.
+</p>
+
+<p>En nuestro proyecto, utilizamos Fetch API para enviar datos del formulario al servidor y recibir una respuesta sin recargar la página.</p>
+
+<hr>
+
+<h3>2. Estructura Básica de Fetch API</h3>
+
+<p>La estructura básica de una solicitud con Fetch API es la siguiente:</p>
+
+<pre><code class="language-javascript">
+fetch(url, opciones)
+    .then(respuesta => {
+        // Manejar la respuesta
+    })
+    .catch(error => {
+        // Manejar errores
+    });
+</code></pre>
+
+<ul>
+    <li><strong><code>url</code></strong>: La URL a la que se realiza la solicitud.</li>
+    <li><strong><code>opciones</code></strong>: Un objeto opcional que permite configurar el método HTTP, los encabezados, el cuerpo de la solicitud, etc.</li>
+    <li><strong><code>then()</code></strong>: Maneja la respuesta cuando la solicitud se completa exitosamente.</li>
+    <li><strong><code>catch()</code></strong>: Maneja los errores que ocurren durante la solicitud.</li>
+</ul>
+
+<p>En nuestro caso, utilizamos la sintaxis moderna de <strong>async/await</strong>, que facilita la lectura y el manejo de promesas.</p>
+
+<hr>
+
+<h3>3. Uso de Fetch API en Nuestro Proyecto</h3>
+
+<p>En el archivo <code>validarajax.js</code>, definimos la función <code>enviarFormulario()</code> que se encarga de enviar los datos del formulario al servidor utilizando Fetch API.</p>
+
+<p>Veamos el código paso a paso:</p>
+
+<h4>Código JavaScript (<code>validarajax.js</code>)</h4>
+
+<pre><code class="language-javascript">
+async function enviarFormulario() {
+    const botonEnviar = document.getElementById("enviar");
+    botonEnviar.disabled = true;
+    botonEnviar.value = "Un momento...";
+
+    const form = document.getElementById("miForm");
+    const formData = new FormData(form);
+
+    try {
+        const response = await fetch(window.location.href, {
+            method: "POST",
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            body: formData,
+        });
+
+        if (!response.ok) {
+            throw new Error("Error en la solicitud al servidor.");
+        }
+
+        const data = await response.json();
+
+        document.getElementById("errUsu").innerHTML = "";
+        document.getElementById("errPass").innerHTML = "";
+        document.getElementById("errMail").innerHTML = "";
+
+        if (!data.success) {
+            if (data.errUsu) {
+                document.getElementById("errUsu").innerHTML = data.errUsu;
+            }
+            if (data.errPass) {
+                document.getElementById("errPass").innerHTML = data.errPass;
+            }
+            if (data.errMail) {
+                document.getElementById("errMail").innerHTML = data.errMail;
+            }
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        alert("Ocurrió un error: " + error.message);
+    } finally {
+        botonEnviar.disabled = false;
+        botonEnviar.value = "Registrar";
+    }
+
+    return false;
+}
+</code></pre>
+
+<hr>
+
+<h3>Explicación Detallada del Código</h3>
+
+<h4>1. Desactivar el Botón de Enviar</h4>
+
+<pre><code class="language-javascript">
+const botonEnviar = document.getElementById("enviar");
+botonEnviar.disabled = true;
+botonEnviar.value = "Un momento...";
+</code></pre>
+
+<ul>
+    <li>Desactivamos el botón de envío para evitar múltiples clics mientras se realiza la solicitud.</li>
+    <li>Cambiamos el texto del botón para indicar al usuario que el formulario está siendo procesado.</li>
+</ul>
+
+<h4>2. Obtener los Datos del Formulario</h4>
+
+<pre><code class="language-javascript">
+const form = document.getElementById("miForm");
+const formData = new FormData(form);
+</code></pre>
+
+<ul>
+    <li>Obtenemos el formulario usando <code>getElementById</code>.</li>
+    <li>Utilizamos <code>FormData</code> para recopilar todos los datos del formulario automáticamente.</li>
+</ul>
+
+<h4>3. Realizar la Solicitud con Fetch API</h4>
+
+<pre><code class="language-javascript">
+const response = await fetch(window.location.href, {
+    method: "POST",
+    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+    body: formData,
+});
+</code></pre>
+
+<ul>
+    <li><strong><code>await fetch(...)</code></strong>: La palabra clave <code>await</code> espera a que la solicitud Fetch se complete antes de continuar con el código.</li>
+    <li><strong><code>window.location.href</code></strong>: La URL a la que enviamos la solicitud es la misma página (<code>index.php</code>).</li>
+    <li><strong><code>method: "POST"</code></strong>: Indicamos que la solicitud es de tipo POST.</li>
+    <li><strong><code>headers</code></strong>: Añadimos un encabezado adicional para indicar que es una solicitud AJAX.</li>
+</ul>
+
+<h4>4. Manejo de Errores de la Solicitud</h4>
+
+<pre><code class="language-javascript">
+if (!response.ok) {
+    throw new Error("Error en la solicitud al servidor.");
+}
+</code></pre>
+
+<p>Verificamos si la respuesta es exitosa. Si no lo es, lanzamos un error.</p>
+
+<h4>5. Parsear la Respuesta del Servidor</h4>
+
+<pre><code class="language-javascript">
+const data = await response.json();
+</code></pre>
+
+<p>Usamos <code>response.json()</code> para parsear la respuesta como un objeto JSON.</p>
+
+<h4>6. Limpiar Mensajes de Error Anteriores</h4>
+
+<pre><code class="language-javascript">
+document.getElementById("errUsu").innerHTML = "";
+document.getElementById("errPass").innerHTML = "";
+document.getElementById("errMail").innerHTML = "";
+</code></pre>
+
+<p>Limpiamos los mensajes de error anteriores.</p>
+
+<h4>7. Mostrar Mensajes de Error o Éxito</h4>
+
+<pre><code class="language-javascript">
+if (!data.success) {
+    if (data.errUsu) document.getElementById("errUsu").innerHTML = data.errUsu;
+    if (data.errPass) document.getElementById("errPass").innerHTML = data.errPass;
+    if (data.errMail) document.getElementById("errMail").innerHTML = data.errMail;
+} else {
+    alert(data.message);
+}
+</code></pre>
+
+<p>Mostramos mensajes de error o de éxito al usuario.</p>
+
+<h4>8. Manejo de Errores con <code>try...catch</code></h4>
+
+<pre><code class="language-javascript">
+catch (error) {
+    alert("Ocurrió un error: " + error.message);
+}
+</code></pre>
+
+<p>Manejamos errores durante la solicitud o el procesamiento de la respuesta.</p>
+
+<h4>9. Restaurar el Estado del Botón de Enviar</h4>
+
+<pre><code class="language-javascript">
+finally {
+    botonEnviar.disabled = false;
+    botonEnviar.value = "Registrar";
+}
+</code></pre>
+
+<p>Restauramos el botón de envío a su estado original.</p>
+
+<hr>
+
+<h3>Ventajas de Usar Fetch API</h3>
+
+<ul>
+    <li><strong>Código Más Legible</strong>: La sintaxis basada en promesas y el uso de <code>async/await</code> hacen que el código sea más fácil de leer y mantener.</li>
+    <li><strong>Mayor Flexibilidad</strong>: Permite manejar respuestas en diferentes formatos como JSON, texto o blobs.</li>
+    <li><strong>Mejor Manejo de Errores</strong>: Podemos manejar errores de red y errores en la respuesta del servidor de manera clara.</li>
+</ul>

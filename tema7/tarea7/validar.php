@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'Usuario.php';
+require_once 'include/Usuario.php';
 
 // Recolectar los parámetros enviados por la solicitud POST
 $usu = $_POST['usu'];

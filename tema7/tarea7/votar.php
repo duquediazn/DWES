@@ -3,42 +3,59 @@ require './include/Votos.php';
 session_start();
 
 if (!isset($_SESSION['usu'])) {
-    echo json_encode(['error' => 'Usuario no autenticado']);
-    exit;
+    header('Location:login.php');
+    exit();
 }
 
 $idProducto = $_POST['idProducto'];
-$cantidad = $_POST['cantidad'];
+$cantidad = $_POST['valoracion'];
 $idUsuario = $_SESSION['usu'];
 
+// Validación de que la cantidad está entre 1 y 5
+if ($cantidad < 1 || $cantidad > 5) {
+    // Si la cantidad no es válida, se responde con un error
+    if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+        echo json_encode(['status' => 'error', 'message' => 'La valoración debe estar entre 1 y 5.']);
+        exit();
+    } else {
+        $_SESSION["mensaje"] = "La valoración debe estar entre 1 y 5.";
+        header("Location: listado.php");
+        exit();
+    }
+}
+
 $votos = new Votos();
-$valoracion = $votos->miVoto($idProducto, $idUsuario, $cantidad);
+$resultado = $votos->miVoto($cantidad, $idProducto, $idUsuario);
 
-if ($valoracion === false) {
-    echo json_encode(['error' => 'Ya has valorado este producto']);
+if (!$resultado) {
+    // Si es una solicitud AJAX, enviamos el mensaje como JSON
+    if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+        echo json_encode(['status' => 'error', 'message' => 'Ya has valorado este producto.']);
+        exit();
+    } else {
+        // Si no es AJAX, redirigimos con un mensaje de error
+        $_SESSION["mensaje"] = "Ya has valorado este producto";
+        header("Location: listado.php");
+        exit();
+    }
+}
+
+// Obtener el número de votos y las estrellas actualizadas
+$numVotos = $votos->numVotos($idProducto);
+$estrellasData = $votos->pintarEstrellas($idProducto);
+
+// Si es una solicitud AJAX, devolvemos el resultado en JSON
+if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+    echo json_encode([
+        'status' => 'success',
+        'numVotos' => $numVotos,
+        'estrellas' => $estrellasData['estrellas'],
+        'halfStar' => $estrellasData['halfStar']
+    ]);
+    exit();
 } else {
-    // Obtener los datos actualizados de valoración
-    $estrellas = $votos->pintarEstrellas($idProducto);
+    // Si no es AJAX, redirigimos de vuelta a listado.php con un mensaje de éxito
+    $_SESSION["mensaje"] = "Gracias por tu valoración.";
+    header("Location: listado.php");
+    exit();
 }
-
-function pintarEstrellasHTML($numVotos, $media) {
-    $html = "<div>{$numVotos} Valoraciones. ";
-
-    // Pintamos las estrellas completas
-    for ($i = 1; $i <= floor($media); $i++) {
-        $html .= '<i class="fa fa-star"></i>';
-    }
-    // Pintamos media estrella si corresponde
-    if ($media - floor($media) >= 0.5) {
-        $html .= '<i class="fa fa-star-half-alt"></i>';
-    }
-    // Completamos con estrellas vacías hasta 5
-    for ($i = ceil($media); $i < 5; $i++) {
-        $html .= '<i class="fa fa-star-o"></i>';
-    }
-
-    $html .= "</div>";
-    return $html;
-}
-
-echo pintarEstrellasHTML($estrellas['num_votos'], $estrellas['media']);

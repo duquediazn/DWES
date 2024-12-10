@@ -55,7 +55,8 @@
             <input class="btn btn-primary me-2 mt-2" type="submit" value="Crear">
             <input class="btn btn-success me-2 mt-2" type="reset" value="Limpiar">
             <a class="btn btn-info me-2 mt-2" href="jugadores.php">Volver</a>
-            <a class="btn btn-secondary me-2 mt-2" href="generarCode.php"><i class="bi bi-upc-scan"></i> Generar Barcode</a>
+            <button type="button" class="btn btn-secondary me-2 mt-2" id="generarCodigoButton" href="generarCode.php"><i class="bi bi-upc-scan"></i> Generar Barcode</button>
         </form>
     </div>
+    <script src="js/ajax.js"></script>
 @endsection

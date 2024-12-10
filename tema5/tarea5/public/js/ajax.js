@@ -1,9 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const generarCodigoButton = document.getElementById('generarCodigoButton');
-    console.log("holi");
-    generarCodigoButton.addEventListener('click', async function (event) {
-        event.preventDefault(); // Prevenir que el formulario se envíe o recargue la página
 
+    const generarCodigoButton = document.getElementById('generarCodigoButton');
+
+    generarCodigoButton.addEventListener('click', async function () {
         try {
             // Realizar una solicitud fetch para generar el código de barras
             const response = await fetch('generarCode.php', {

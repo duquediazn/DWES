@@ -1,5 +1,5 @@
 <?php
-session_start(); 
+session_start();
 
 if (!isset($_SESSION['usuario'])) { //Redirección, acceso restringido.
     header('Location: login.php');

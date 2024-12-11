@@ -3,8 +3,9 @@ require '../vendor/autoload.php';
 
 use Clases\Operaciones;
 
-$uri = 'http://localhost/~nazaret/DWES/tema6/tarea6/servidorSoap/'; 
-$parametros = ['uri' => $uri]; 
+//$uri = 'http://localhost/~nazaret/DWES/tema6/tarea6/servidorSoap/'; 
+$uri = 'http://localhost/DWES/tema6/tarea6/servidorSoap/';
+$parametros = ['uri' => $uri];
 try {
     $server = new SoapServer(NULL, $parametros);
     $server->setClass('Clases\Operaciones');

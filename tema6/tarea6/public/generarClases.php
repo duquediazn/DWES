@@ -23,7 +23,8 @@ use WsdlToPhp\PackageGenerator\Generator\Generator;
 // Options definition: the configuration file parameter is optional
 $options = GeneratorOptions::instance();
 $options
-    ->setOrigin('http://localhost/~nazaret/DWES/tema6/tarea6/servidorSoap/servicioW.php?wsdl')
+    //->setOrigin('http://localhost/~nazaret/DWES/tema6/tarea6/servidorSoap/servicioW.php?wsdl')
+    ->setOrigin('http://localhost/DWES/tema6/tarea6/servidorSoap/servicioW.php?wsdl') //xampp
     ->setDestination('../src/Clases1')
     ->setComposerName('nazaret/tarea6'); // Package name
 try {

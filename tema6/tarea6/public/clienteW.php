@@ -1,5 +1,6 @@
 <?php
-$url = "http://localhost/~nazaret/DWES/tema6/tarea6/servidorSoap/servicio.wsdl"; 
+//$url = "http://localhost/~nazaret/DWES/tema6/tarea6/servidorSoap/servicio.wsdl"; 
+$url = "http://localhost/DWES/tema6/tarea6/servidorSoap/servicio.wsdl"; //xampp
 
 try {
     $cliente = new SoapClient($url);
@@ -8,9 +9,9 @@ try {
 }
 
 //Variables:
-$cod_prod=1;
-$cod_tienda=1;
-$cod_familia="CONSOL";
+$cod_prod = 1;
+$cod_tienda = 1;
+$cod_familia = "CONSOL";
 
 //Vemos las funciones que nos ofrece el servicio
 var_dump($cliente->__getFunctions());
@@ -18,7 +19,7 @@ echo "<br>";
 
 //Llamamos a los métodos correspondientes:
 $pvp = $cliente->getPVP($cod_prod);
-$unidades = $cliente->getStock($cod_prod,$cod_tienda);
+$unidades = $cliente->getStock($cod_prod, $cod_tienda);
 $familias = $cliente->getFamilias();
 $productos = $cliente->getProductosFamilia($cod_familia);
 
@@ -27,12 +28,12 @@ echo "El PVP del producto de código $cod_prod es: $pvp € <br>";
 echo "Quedan $unidades unidades disponible del producto de código $cod_prod en la tienda de código $cod_tienda <br>";
 echo "Familias de productos existentes: <br>";
 
-foreach($familias as $familia) {
-    echo $familia."<br>";
+foreach ($familias as $familia) {
+    echo $familia . "<br>";
 }
 
 echo "Códigos de los productos de la familia $cod_familia: <br>";
 
-foreach($productos as $producto) {
-    echo $producto."<br>";
+foreach ($productos as $producto) {
+    echo $producto . "<br>";
 }

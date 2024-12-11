@@ -4,14 +4,14 @@ ini_set('display_errors', 1);
 
 //https://cvnet.cpd.ua.es/servicioweb/publicos/pub_gestdocente.asmx?wsdl
 
-$cliente=new SoapClient("https://cvnet.cpd.ua.es/servicioweb/publicos/pub_gestdocente.asmx?wsdl");
+$cliente = new SoapClient("https://cvnet.cpd.ua.es/servicioweb/publicos/pub_gestdocente.asmx?wsdl");
 
 $parametros = [
-    'plengua'=>'es',
-    'pcurso'=>'2024'
+    'plengua' => 'es',
+    'pcurso' => '2024'
 ];
 
-$respuesta=$cliente->wstitulosuni($parametros);
+$respuesta = $cliente->wstitulosuni($parametros);
 
 /*
 La llamada devuelve un objeto de una clase predefinida en PHP llamada: StdClass. 
@@ -22,7 +22,7 @@ Si hacemos "var_dump($titulos)" obtenemos lo siguiente:
 
 foreach ($respuesta->wstitulosuniResult->ClaseTitulosUni as $indice => $titulo) {
     echo "Título $indice:<br>";
-    
+
     // Acceso a las propiedades del objeto
     echo "Código: " . $titulo->codigo . "<br>";
     echo "Nombre: " . $titulo->nombre . "<br>";
@@ -57,4 +57,3 @@ foreach($tipos as $k=>$v) {
 echo "</ul>";
 
 */
-

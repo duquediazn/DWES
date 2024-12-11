@@ -1,6 +1,6 @@
 <?php
 //$url = "http://localhost/~nazaret/DWES/tema6/tarea6/servidorSoap/servicio.wsdl"; 
-$url = "http://localhost/DWES/tema6/tarea6/servidorSoap/servicio.wsdl"; //xampp
+$url = "http://localhost/DWES/tema6/tarea6/servidorSoap/servicio-xampp.wsdl"; //xampp
 
 try {
     $cliente = new SoapClient($url);

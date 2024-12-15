@@ -1,0 +1,13 @@
+{
+    "name": "luism/google-task",
+    "description": "google task",
+    "type": "project",
+    "require": {
+        "google/apiclient": "^2.18"
+    },
+    "autoload": {
+        "psr-4": {
+            "Luism\\GoogleTask\\": "src/"
+        }
+    }
+}

@@ -1,6 +1,5 @@
 <?php
-// Clave de la API de OpenCageData
-define('OPENCAGE_API_KEY', '6575685d4ec44450a5b75ea6afe16579');
+require_once "opencage_api_key.php";
 
 // Función para obtener coordenadas a partir de una dirección
 function getCoordinates($address)

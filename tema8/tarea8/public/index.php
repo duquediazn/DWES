@@ -11,7 +11,7 @@ try {
     $client->setAuthConfig('../client_secret.json');
     $client->setAccessType('offline');
     $client->setPrompt('select_account consent');
-    $client->setRedirectUri('http://localhost/callback'); // URI de redirección
+    $client->setRedirectUri('http://localhost/DWES/tema8/tarea8/public/'); // URI de redirección
 
     // Ruta del token
     $tokenPath = '../token.json';

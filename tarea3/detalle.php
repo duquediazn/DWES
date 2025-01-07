@@ -3,22 +3,29 @@ require_once "php/conexion.php";
 
 $mensaje = "";
 
-if (isset($_GET["id"])) {
-    $id = $_GET["id"];
+if (isset($_GET["id"]) && ctype_digit($_GET["id"])) { //Validación del parámetro id (nos aseguramos de que es un número)
+    $id = (int)$_GET["id"];
 
     try {
         $consulta = $conexionProyecto->query("SELECT id, nombre, nombre_corto, descripcion, pvp, familia FROM productos
         WHERE id = $id");
 
         if (!$registro = $consulta->fetch()) {
-            header('Location:listado.php');
+            header('Location:listado.php'); //Si el id no existe redirigimos a listado.php
+            exit(); //Para asegurarnos de que el resto del script no se ejecuta después de header().
         }
+
+         // Escapar datos para evitar inyecciones de HTML
+         $registro = array_map('htmlspecialchars', $registro);
     } catch(PDOException $e) {
-        $mensaje = '
+        $_SESSION["mensaje"] = '
             <div class="alert alert-danger container container-md mb-2"> 
                 Error: ' . $e->getMessage() . ' 
             </div>';
     }
+} else { //Redirigimos a listado.php si el id de la query no es válido
+    header('Location: listado.php');
+    exit();
 }
 
 include_once "inc/header.php";

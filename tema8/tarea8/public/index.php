@@ -120,7 +120,7 @@ try {
     </div>
 
     <script>
-        const baseURL = '/dswut8/google-task/';
+        //const baseURL = '/dswut8/google-task/';
 
         $(document).ready(function() {
             function getQueryParam(param) {

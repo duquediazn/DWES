@@ -120,8 +120,6 @@ try {
     </div>
 
     <script>
-        //const baseURL = '/dswut8/google-task/';
-
         $(document).ready(function() {
             function getQueryParam(param) {
                 const urlParams = new URLSearchParams(window.location.search);
@@ -214,7 +212,7 @@ try {
                 }
                 if (confirm('¿Estás seguro de que deseas borrar esta lista?')) {
                     $.ajax({
-                        url: `/dswut8/google-task/src/tasklist.php?listId=${taskListId}`,
+                        url: `http://localhost/DWES/tema8/tarea8/src/tasklist.php?listId=${taskListId}`,
                         type: 'DELETE',
                         success: function() {
                             alert('Lista borrada correctamente.');

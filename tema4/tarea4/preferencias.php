@@ -15,7 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Aquí se definen los valores predeterminados
-$idioma = isset($_SESSION['idioma']) ? $_SESSION['idioma'] : "";
+//$idioma = isset($_SESSION['idioma']) ? $_SESSION['idioma'] : "";
+$idioma = isset($_SESSION['idioma']) ?: "";
 $perfil_publico = isset($_SESSION['perfil_publico']) ? $_SESSION['perfil_publico'] : "";
 $zona_horaria = isset($_SESSION['zona_horaria']) ? $_SESSION['zona_horaria'] : "";
 ?>

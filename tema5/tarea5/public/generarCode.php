@@ -11,5 +11,4 @@ do {
     $codigo = $faker->ean13; // Generar un nuevo código.
 } while (!(new Data())->isValidCode($codigo)); // Verificar que el código no exista ya en la base de datos.
 
-// Devolver la respuesta como JSON
 echo json_encode(['codigo' => $codigo]);

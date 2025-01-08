@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { //Se envía el formulario
 
 <body style="background:silver;">
     <div class="container mt-5">
-        <div class="d-flex justify-content-center h-100">
+        <div class="d-flex justify-content-center">
             <div class="card">
                 <div class="card-header">
                     <h3>Login</h3>

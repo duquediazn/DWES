@@ -48,7 +48,8 @@
                 <div class="col">
                     <label class="mb-2" for="codigo">Código de barras</label>
                     <input class="form-control mb-2" type="text" name="codigo" id="codigo"
-                        placeholder="Codigo de barras" title="Código de barras" maxlength="13" readonly>
+                        placeholder="Codigo de barras" title="Código de barras" maxlength="13" 
+                        @if ($codigo) value="{{$codigo}}" @endif readonly> 
                 </div>
             </div>
             <input class="btn btn-primary me-2 mt-2" type="submit" value="Crear">

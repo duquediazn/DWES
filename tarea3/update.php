@@ -1,12 +1,12 @@
-<?php
+<?php //Mejoras aplicadas después de corrección
 require_once "php/conexion.php";
 
 include_once "inc/header.php";
 
 $mensaje = "";
 
-if (isset($_GET["id"])) {
-    $id = $_GET["id"];
+if (isset($_GET["id"]) && ctype_digit($_GET["id"])) { //Validación del parámetro id (nos aseguramos de que es un número)
+    $id = (int)$_GET["id"];
     
     try {
         $consulta = $conexionProyecto->query("SELECT id, nombre, nombre_corto, descripcion, pvp, familia FROM productos
@@ -18,6 +18,7 @@ if (isset($_GET["id"])) {
             $registros_familias = $consulta->fetchAll();
         } else {
             header('Location:listado.php');
+            exit();
         }
         
     } catch(PDOException $e) {
@@ -27,7 +28,11 @@ if (isset($_GET["id"])) {
             </div>';
     }
     
-} 
+}  else { //Redirigimos a listado.php si el id de la query no es válido
+    header('Location: listado.php');
+    exit();
+}
+
 //Envío del formulario: creación de un registro
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -64,10 +69,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Validar el campo "familia"
-    if (empty($_POST['familia'])) {
-        $errores['familia'] = "La familia es obligatoria.";
-    } else {
+    if (!empty($_POST['familia'])) {
         $familia = htmlspecialchars(trim($_POST["familia"]));
+        // Verifica que la familia exista en la base de datos
+        $familiaExiste = $conexionProyecto->prepare("SELECT * FROM familias WHERE cod = :familia");
+        $familiaExiste->bindParam(':familia', $familia, PDO::PARAM_STR);
+        $familiaExiste->execute();
+        if (!$familiaExiste->fetch()) {
+            $errores['familia'] = "La familia seleccionada no es válida.";
+        }
+    } else {
+        $errores['familia'] = "La familia es obligatoria.";
     }
 
     // Validar el campo "descripcion" (opcional)
@@ -90,11 +102,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $consulta->bindParam(":id", $id);
 
             $consulta->execute(); //Ejecución del update
-
+            
             $mensaje = "
                     <div class='alert alert-success container container-md mb-2'>
                         Producto actualizado correctamente.
-                    </div>";
+                    </div>"; 
         } catch (PDOException $e) {
             $mensaje = '
                     <div class="alert alert-danger container container-md mb-2"> 
@@ -185,4 +197,4 @@ if (!empty($mensaje)) {
 
 <?php
 include_once "inc/footer.php";
-?>
+?>  

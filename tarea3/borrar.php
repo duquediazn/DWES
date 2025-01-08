@@ -1,10 +1,10 @@
-<?php
+<?php //Mejoras aplicadas después de corrección
 require_once "php/conexion.php";
 
 $mensaje = "";
 
-if ($_POST["id"]) {
-    $id = $_POST["id"];
+if ($_POST["id"] && ctype_digit($_POST["id"])) { //Validación del parámetro id (nos aseguramos de que es un número)
+    $id = (int)$_POST["id"];
 
     $consulta = $conexionProyecto->query("SELECT id FROM productos WHERE id = $id");
 
@@ -51,4 +51,4 @@ require_once "inc/header.php";
     <a class="btn btn-secondary" href="listado.php">Volver</a>
 </div>
 
-<?php require_once "footer.php"; ?>
+<?php require_once "inc/footer.php"; ?>

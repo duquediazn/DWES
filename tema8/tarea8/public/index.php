@@ -125,7 +125,7 @@ try {
                 const urlParams = new URLSearchParams(window.location.search);
                 return urlParams.get(param);
             }
-            
+
             function loadTaskLists() {
                 $.getJSON('../src/tasklist.php', function(data) {
                     $('#taskList').empty();
@@ -175,6 +175,33 @@ try {
                     });
                 });
             }
+
+            //IMPLEMENTADO: Borrar una tarea de una lista:
+            $(document).on('click', '.deleteTask', function() {
+                const taskId = $(this).data('id'); // Obtener el taskId
+                const taskListId = $('#taskList').val(); // Obtener el ID de la lista activa
+
+                if (!taskListId) {
+                    alert('Por favor selecciona una lista.');
+                    return;
+                }
+
+                if (confirm('¿Estás seguro de que deseas eliminar esta tarea?')) {
+                    $.ajax({
+                        url: `../src/task.php?taskId=${encodeURIComponent(taskId)}&taskListId=${encodeURIComponent(taskListId)}`,
+                        type: 'DELETE',
+                        contentType: 'application/json',
+                        success: function(response) {
+                            alert('Tarea eliminada correctamente.');
+                            loadTasks(taskListId); // Recargar las tareas de la lista activa
+                        },
+                        error: function(err) {
+                            alert('Hubo un error al eliminar la tarea. Por favor, inténtalo nuevamente.');
+                        }
+                    });
+                }
+            });
+
 
             $('#taskList').change(function() {
                 const taskListId = $(this).val();

@@ -42,15 +42,15 @@ try {
             throw new Exception('Faltan parámetros obligatorios.');
         }
 
-     
+
         $task = new Google_Service_Tasks_Task();
         $task->setTitle($title);
         $task->setNotes($notes);
-        
-        
+
+
         $createdTask = null;
         $createdTask = $service->tasks->insert($listId, $task);
-        
+
 
         echo json_encode([
             'success' => true,
@@ -78,6 +78,18 @@ try {
             ];
         }
         echo json_encode($response);
+    } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+        $taskId = $_GET['taskId'] ?? null;
+        $taskListId = $_GET['taskListId'] ?? null;
+
+        if (!$taskId || !$taskListId) {
+            throw new Exception('Faltan parámetros obligatorios: taskId o taskListId.');
+        }
+
+        // Lógica para eliminar la tarea con el ID especificado
+        $service->tasks->delete($taskListId, $taskId);
+
+        echo json_encode(['success' => true]);
     } else {
         throw new Exception('Método HTTP no soportado.');
     }

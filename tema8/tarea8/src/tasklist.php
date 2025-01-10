@@ -28,7 +28,6 @@ try {
             $response[] = ['id' => $taskList->getId(), 'title' => $taskList->getTitle()];
         }
         echo json_encode($response);
-
     } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Crear una nueva lista de tareas
         $input = json_decode(file_get_contents('php://input'), true);
@@ -59,11 +58,9 @@ try {
         $service->tasklists->insert($taskList);
 
         echo json_encode(['success' => true, 'message' => 'Lista de tareas creada con éxito.']);
-
     } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-        // Eliminar una lista de tareas
-        parse_str(file_get_contents('php://input'), $input);
-        $listId = $input['listId'] ?? null;
+        // Eliminar una lista de tareas;
+        $listId = $_GET['listId'] ?? null;
 
         if (!$listId) {
             throw new Exception('No se proporcionó el listId.');

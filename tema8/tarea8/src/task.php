@@ -30,7 +30,7 @@ try {
 
     $service = new Google_Service_Tasks($client);
 
-    // Manejar solicitud POST para crear una nueva tarea
+    //Solicitud POST para crear una nueva tarea:
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $input = json_decode(file_get_contents('php://input'), true);
 
@@ -62,6 +62,7 @@ try {
             FILE_APPEND
         );
         exit;
+        //Solicitud GET para listar las tareas de una lista:
     } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $listId = $_GET['listId'] ?? null;
         if (!$listId) {
@@ -74,10 +75,12 @@ try {
             $response[] = [
                 'id' => $task->getId(),
                 'title' => $task->getTitle(),
-                'status' => $task->getStatus()
+                'status' => $task->getStatus(),
+                'notes' => $task->getNotes() //Se añade para la ordenación de los repartos (contiene lat. y long.)
             ];
         }
         echo json_encode($response);
+        //IMPLEMENTADO: Solicitud DELETE para eliminar una tarea:
     } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
         $taskId = $_GET['taskId'] ?? null;
         $taskListId = $_GET['taskListId'] ?? null;
@@ -86,7 +89,6 @@ try {
             throw new Exception('Faltan parámetros obligatorios: taskId o taskListId.');
         }
 
-        // Lógica para eliminar la tarea con el ID especificado
         $service->tasks->delete($taskListId, $taskId);
 
         echo json_encode(['success' => true]);

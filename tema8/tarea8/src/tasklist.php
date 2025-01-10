@@ -20,17 +20,18 @@ if (file_exists($tokenPath)) {
 $service = new Google_Service_Tasks($client);
 
 try {
-    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-        // Listar las listas de tareas
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') { // Listar las listas de tareas
         $taskLists = $service->tasklists->listTasklists();
         $response = [];
         foreach ($taskLists->getItems() as $taskList) {
             $response[] = ['id' => $taskList->getId(), 'title' => $taskList->getTitle()];
         }
         echo json_encode($response);
-    } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Crear una nueva lista de tareas
+    } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') { // IMPLEMENTADO: Crear una nueva lista de tareas
         $input = json_decode(file_get_contents('php://input'), true);
+        /*
+        
+        */
         $date = $input['date'] ?? null;
 
         if (!$date) {

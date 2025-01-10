@@ -121,11 +121,15 @@ try {
 
     <script>
         $(document).ready(function() {
+            // Función para obtener parámetros de la URL
             function getQueryParam(param) {
+                // Crea un objeto URLSearchParams a partir de la query string de la URL actual
                 const urlParams = new URLSearchParams(window.location.search);
+                // Devuelve el valor del parámetro solicitado
                 return urlParams.get(param);
             }
 
+            //Cargar listas de tareas:
             function loadTaskLists() {
                 $.getJSON('../src/tasklist.php', function(data) {
                     $('#taskList').empty();
@@ -152,6 +156,7 @@ try {
                 });
             }
 
+            //Cargar tareas de una lista:
             function loadTasks(taskListId) {
                 $.getJSON(`../src/task.php?listId=${taskListId}`, function(data) {
                     $('#taskTableBody').empty();
@@ -202,12 +207,13 @@ try {
                 }
             });
 
-
+            //Cambiar Lista Seleccionada:
             $('#taskList').change(function() {
                 const taskListId = $(this).val();
                 loadTasks(taskListId);
             });
 
+            //Añadir Tareas:
             $('#addTask').click(function() {
                 const taskListId = $('#taskList').val();
                 if (!taskListId) {
@@ -217,20 +223,98 @@ try {
                 window.location.href = `repartos.php?id=${taskListId}`;
             });
 
+            //Añadir listas: 
             $('#addList').click(function() {
-                window.location.href = 'addTaskList.php'; // Página para crear una nueva lista
+                window.location.href = 'addTaskList.php'; // IMPLEMENTADA: Página para crear una nueva lista
             });
 
+            //BLOQUE DE LÓGICA DE ORDENACIÓN: 
+            // Función para obtener la posición actual del usuario
+            function obtenerUbicacion(callback) {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        const userLat = position.coords.latitude;
+                        const userLng = position.coords.longitude;
+                        console.log(userLat);
+                        console.log(userLng);
+                        callback(userLat, userLng);
+                    }, function() {
+                        alert("No se pudo obtener la ubicación. Verifica los permisos.");
+                    });
+                } else {
+                    alert("Geolocalización no es compatible con este navegador.");
+                }
+            }
+
+            // Fórmula de Haversine para calcular la distancia entre dos puntos
+            function calcularDistancia(lat1, lon1, lat2, lon2) {
+                const R = 6371; // Radio de la Tierra en km
+                const dLat = (lat2 - lat1) * (Math.PI / 180);
+                const dLon = (lon2 - lon1) * (Math.PI / 180);
+                const a =
+                    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                return R * c; // Distancia en km
+            }
+
+            // Función para ordenar tareas por distancia
+            function ordenarTareasPorDistancia(userLat, userLng) {
+                const taskListId = $('#taskList').val();
+                if (!taskListId) {
+                    alert("Por favor selecciona una lista.");
+                    return;
+                }
+                // Obtener las tareas desde el servidor
+                $.getJSON(`../src/task.php?listId=${taskListId}`, function(tasks) {
+                    // Agregar distancia a cada tarea
+                    tasks.forEach(task => {
+
+                        // Parsear el string JSON que está en task.notes
+                        const taskNotes = JSON.parse(task.notes);
+
+                        // Extraer las coordenadas desde taskNotes
+                        const taskLat = parseFloat(taskNotes.latitude); // Coordenada de latitud
+                        const taskLng = parseFloat(taskNotes.longitude); // Coordenada de longitud
+
+                        task.distance = calcularDistancia(userLat, userLng, taskLat, taskLng);
+                    });
+                    // Ordenar tareas por distancia
+                    tasks.sort((a, b) => a.distance - b.distance);
+
+                    // Renderizar tareas ordenadas
+                    $('#taskTableBody').empty();
+                    tasks.forEach(task => {
+                        $('#taskTableBody').append(`
+                        <tr>
+                            <td>${task.title} (${task.distance.toFixed(2)} km)</td>
+                            <td>${task.status}</td>
+                            <td>
+                                <button class="btn btn-sm btn-info viewMap" data-id="${task.id}">
+                                    <i class="fas fa-map"></i> Mapa
+                                </button>
+                            </td>
+                        </tr>`);
+                    });
+                })
+            };
+
+            //Botón "Ordenar:
             $('#orderTasks').click(function() {
                 const taskListId = $('#taskList').val();
                 if (!taskListId) {
                     alert('Por favor selecciona una lista.');
                     return;
                 }
-                alert('Ordenar tareas no implementado todavía.');
-                // Implementar lógica de ordenación aquí
+                //IMPLEMENTADO: Lógica de ordenación.
+                obtenerUbicacion(function(userLat, userLng) {
+                    ordenarTareasPorDistancia(userLat, userLng);
+                });
+
             });
 
+            //Borrar una lista de tareas:
             $('#deleteList').click(function() {
                 const taskListId = $('#taskList').val();
                 if (!taskListId) {
@@ -249,10 +333,31 @@ try {
                 }
             });
 
+            //Ver ubicación en Google Maps:
             $(document).on('click', '.viewMap', function() {
                 const taskId = $(this).data('id');
-                alert(`Abrir mapa para la tarea: ${taskId}`);
-                // Implementar la redirección o lógica del mapa aquí
+                const taskListId = $('#taskList').val()
+                // IMPLEMENTADO: redirección o lógica del mapa aquí:
+                // Hacer la solicitud GET para obtener las tareas
+                $.getJSON(`../src/task.php?listId=${taskListId}`, function(tasks) {
+                    // Filtrar la tarea específica utilizando el taskId
+                    const task = tasks.find(task => task.id === taskId);
+
+                    if (task) {
+                        const notes = JSON.parse(task.notes); // Convertir el string JSON de 'notes' a un objeto
+                        const latitude = notes.latitude;
+                        const longitude = notes.longitude;
+
+                        //URL para Google Maps
+                        const googleMapsUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
+
+                        // Abrir Google Maps en una nueva ventana
+                        window.open(googleMapsUrl, '_blank');
+                    } else {
+                        console.log("Tarea no encontrada");
+                    }
+                });
+
             });
 
             loadTaskLists();

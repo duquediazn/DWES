@@ -125,7 +125,7 @@ try {
                 const urlParams = new URLSearchParams(window.location.search);
                 return urlParams.get(param);
             }
-
+            
             function loadTaskLists() {
                 $.getJSON('../src/tasklist.php', function(data) {
                     $('#taskList').empty();

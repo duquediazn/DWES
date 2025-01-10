@@ -69,7 +69,7 @@
 
             try {
                 // Enviar la dirección al servidor
-                const response = await fetch('/dswut8/google-task/api/geocoding.php', {
+                const response = await fetch('http://localhost/DWES/tema8/tarea8/src/geocoding.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',

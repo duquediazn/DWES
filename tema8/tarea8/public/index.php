@@ -104,7 +104,7 @@ try {
         </div>
 
         <!-- Tabla de tareas -->
-        <table class="table table-striped">
+        <table class="table table-striped mb-6">
             <thead>
                 <tr>
                     <th>Reparto</th>
@@ -116,6 +116,25 @@ try {
             </tbody>
         </table>
 
+        <!-- Mensaje a usuario-->
+        <div id="userMessage" hidden></div>
+
+        <!-- Lista ordenada de tareas  -->
+        <div id="orderedTaskContainer" class="container mt-4 mb-4 dark" hidden>
+            <h2 class="text-center">Orden de repartos</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Reparto</th>
+                        <th>Distancia</th>
+                    </tr>
+                </thead>
+                <tbody id="orderedTaskBody">
+                    <!-- Las tareas ordenadas se cargarán aquí dinámicamente -->
+
+                </tbody>
+            </table>
+        </div>
 
     </div>
 
@@ -211,6 +230,7 @@ try {
             $('#taskList').change(function() {
                 const taskListId = $(this).val();
                 loadTasks(taskListId);
+                $('#orderedTaskContainer').attr('hidden', true);
             });
 
             //Añadir Tareas:
@@ -232,11 +252,11 @@ try {
             // Función para obtener la posición actual del usuario
             function obtenerUbicacion(callback) {
                 if (navigator.geolocation) {
+                    $('#userMessage').removeAttr('hidden');
+                    $('#userMessage').append("<p class='bg-light p-2 text-danger'>Obteniendo ubicación mediante geolocalización...</p>");
                     navigator.geolocation.getCurrentPosition(function(position) {
                         const userLat = position.coords.latitude;
                         const userLng = position.coords.longitude;
-                        console.log(userLat);
-                        console.log(userLng);
                         callback(userLat, userLng);
                     }, function() {
                         alert("No se pudo obtener la ubicación. Verifica los permisos.");
@@ -244,6 +264,7 @@ try {
                 } else {
                     alert("Geolocalización no es compatible con este navegador.");
                 }
+
             }
 
             // Fórmula de Haversine para calcular la distancia entre dos puntos
@@ -284,34 +305,33 @@ try {
                     tasks.sort((a, b) => a.distance - b.distance);
 
                     // Renderizar tareas ordenadas
-                    $('#taskTableBody').empty();
+                    $('#orderedTaskContainer').removeAttr('hidden');
+                    $('#orderedTaskBody').empty()
                     tasks.forEach(task => {
-                        $('#taskTableBody').append(`
+                        $('#orderedTaskBody').append(`
                         <tr>
-                            <td>${task.title} (${task.distance.toFixed(2)} km)</td>
-                            <td>${task.status}</td>
-                            <td>
-                                <button class="btn btn-sm btn-info viewMap" data-id="${task.id}">
-                                    <i class="fas fa-map"></i> Mapa
-                                </button>
-                            </td>
+                            <td>${task.title}</td>
+                            <td>${task.distance.toFixed(2)} km</td>
                         </tr>`);
                     });
+                    $('#userMessage').empty();
+                    $('#userMessage').attr('hidden', true);
+                    $('#orderTasks').attr("disabled", false);
                 })
             };
 
             //Botón "Ordenar:
             $('#orderTasks').click(function() {
                 const taskListId = $('#taskList').val();
-                if (!taskListId) {
+                if (!taskListId || $('#taskTableBody').is(":empty")) {
                     alert('Por favor selecciona una lista.');
                     return;
                 }
                 //IMPLEMENTADO: Lógica de ordenación.
+                $('#orderTasks').attr("disabled", true);
                 obtenerUbicacion(function(userLat, userLng) {
                     ordenarTareasPorDistancia(userLat, userLng);
                 });
-
             });
 
             //Borrar una lista de tareas:

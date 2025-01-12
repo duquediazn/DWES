@@ -1,9 +1,15 @@
 <?php
+
+require_once "../src/Producto.php";
+
 if (!isset($_GET['id'])) {
     header('Location:tasklist.php');
     die();
 }
 $id = $_GET['id']; // ID de la lista de tareas
+
+$productos = new Producto();
+$arrProductos = $productos->listadoProductos();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -22,53 +28,56 @@ $id = $_GET['id']; // ID de la lista de tareas
 </head>
 
 <body style="background:#00bfa5;">
-    <div class="container mt-3">
-        <div class="d-flex justify-content-center h-100">
-            <div class="card" style='width:28rem;'>
-                <div class="card-header">
-                    <h3><i class="fas fa-cart-plus mr-2"></i>Añadir Tarea</h3>
-                </div>
-                <div class="card-body">
-                    <form id="taskForm">
-                        <div class="input-group form-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" style="width:2.5rem;"><i class="fas fa-map-marked-alt"></i></span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="Dirección" id="address" name="address" required>
+    <div class="container d-flex flex-column justify-content-center align-items-center vh-100">
+        <div class="card" style='width:28rem;'>
+            <div class="card-header">
+                <h3><i class="fas fa-cart-plus mr-2"></i>Añadir Tarea</h3>
+            </div>
+            <div class="card-body">
+                <form id="taskForm">
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" style="width:2.5rem;"><i class="fas fa-map-marked-alt"></i></span>
                         </div>
-                        <div class="form-group mt-1">
-                            <button type="button" class="btn btn-info mr-2" id="getCoordinates">Obtener Coordenadas</button>
+                        <input type="text" class="form-control" placeholder="Dirección" id="address" name="address" required>
+                    </div>
+                    <div class="form-group mt-1">
+                        <button type="button" class="btn btn-info mr-2" id="getCoordinates">Obtener Coordenadas</button>
+                    </div>
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
                         </div>
-                        <div class="input-group form-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="Latitud" id="latitude" name="latitude" readonly>
+                        <input type="text" class="form-control" placeholder="Latitud" id="latitude" name="latitude" readonly>
+                    </div>
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
                         </div>
-                        <div class="input-group form-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="Longitud" id="longitude" name="longitude" readonly>
+                        <input type="text" class="form-control" placeholder="Longitud" id="longitude" name="longitude" readonly>
+                    </div>
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-box-open"></i></span>
                         </div>
-                        <div class="input-group form-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-box-open"></i></span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="Producto" id="producto" name="producto" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="hidden" name="listId" value="<?php echo $id; ?>">
-                            <button type="submit" class="btn btn-success">Añadir Tarea</button>
-                            <a href="../public/index.php?listId=<?php echo $id; ?>" class="btn btn-secondary">Cancelar</a>
+                        <select id="producto" class="form-control" required>
+                            <?php foreach ($arrProductos as $producto) : ?>
+                                <option value="<?php echo $producto->nombre ?>"><?php echo $producto->nombre ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" name="listId" value="<?php echo $id; ?>">
+                        <button type="submit" class="btn btn-success">Añadir Tarea</button>
+                        <a href="../public/index.php?listId=<?php echo $id; ?>" class="btn btn-secondary">Cancelar</a>
 
-                        </div>
-                    </form>
+                    </div>
+                </form>
 
-                </div>
             </div>
         </div>
     </div>
+
 
     <script>
         $(document).ready(function() {

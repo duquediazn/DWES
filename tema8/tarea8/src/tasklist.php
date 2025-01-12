@@ -24,7 +24,9 @@ try {
         $taskLists = $service->tasklists->listTasklists();
         $response = [];
         foreach ($taskLists->getItems() as $taskList) {
-            $response[] = ['id' => $taskList->getId(), 'title' => $taskList->getTitle()];
+            if ($taskList->getTitle() !== "My Tasks") { // Evitar la lista predeterminada de Google Task
+                $response[] = ['id' => $taskList->getId(), 'title' => $taskList->getTitle()];
+            }
         }
         echo json_encode($response);
     } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') { // IMPLEMENTADO: Crear una nueva lista de tareas
@@ -59,7 +61,7 @@ try {
         $service->tasklists->insert($taskList);
 
         echo json_encode(['success' => true, 'message' => 'Lista de tareas creada con éxito.']);
-    } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') { //IMPLEMENTADO: Eliminar una lista de tareas
         // Eliminar una lista de tareas;
         $listId = $_GET['listId'] ?? null;
 

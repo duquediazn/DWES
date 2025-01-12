@@ -200,6 +200,13 @@ try {
                 });
             }
 
+            //Actualizar una tarea de una lista: 
+            $(document).on('click', '.editTask', function() {
+                const taskId = $(this).data('id'); // Obtener el taskId
+                const listId = $('#taskList').val(); // Obtener el ID de la lista activa
+                window.location.href = `updateTask.php?taskId=${encodeURIComponent(taskId)}&listId=${encodeURIComponent(listId)}`;
+            });
+
             //IMPLEMENTADO: Borrar una tarea de una lista:
             $(document).on('click', '.deleteTask', function() {
                 const taskId = $(this).data('id'); // Obtener el taskId

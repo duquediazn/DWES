@@ -31,9 +31,6 @@ try {
         echo json_encode($response);
     } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') { // IMPLEMENTADO: Crear una nueva lista de tareas
         $input = json_decode(file_get_contents('php://input'), true);
-        /*
-        
-        */
         $date = $input['date'] ?? null;
 
         if (!$date) {

@@ -30,8 +30,7 @@ try {
 
     $service = new Google_Service_Tasks($client);
 
-    //Solicitud POST para crear una nueva tarea:
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') { //Solicitud POST para crear una nueva tarea:
         $input = json_decode(file_get_contents('php://input'), true);
 
         $title = $input['title'] ?? null;
@@ -62,8 +61,7 @@ try {
             FILE_APPEND
         );
         exit;
-        //Solicitud GET para listar las tareas de una lista:
-    } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') { //Solicitud GET para listar las tareas de una lista:
         $listId = $_GET['listId'] ?? null;
         if (!$listId) {
             throw new Exception('listId no proporcionado.');
@@ -80,8 +78,7 @@ try {
             ];
         }
         echo json_encode($response);
-        //IMPLEMENTADO: Solicitud DELETE para eliminar una tarea:
-    } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {  //IMPLEMENTADO: Solicitud DELETE para eliminar una tarea:
         $taskId = $_GET['taskId'] ?? null;
         $taskListId = $_GET['taskListId'] ?? null;
 
@@ -90,6 +87,22 @@ try {
         }
 
         $service->tasks->delete($taskListId, $taskId);
+
+        echo json_encode(['success' => true]);
+    } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') { //IMPLEMENTADO: Solicitud PUT para actualizar una tarea:
+        $input = json_decode(file_get_contents('php://input'), true);
+
+        $title = $input['title'] ?? null;
+        $notes = $input['notes'] ?? null;
+        $listId = $input['listId'] ?? null;
+        $taskId = $input['taskId'] ?? null;
+
+        $task = $service->tasks->get($listId, $taskId);
+
+        $task->setTitle($title);
+        $task->setNotes($notes);
+
+        $service->tasks->update($listId, $taskId, $task);
 
         echo json_encode(['success' => true]);
     } else {

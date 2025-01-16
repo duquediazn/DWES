@@ -221,9 +221,13 @@ try {
 
                 if (confirm('¿Estás seguro de que deseas eliminar esta tarea?')) {
                     $.ajax({
-                        url: `../src/task.php?taskId=${encodeURIComponent(taskId)}&taskListId=${encodeURIComponent(taskListId)}`,
+                        url: '../src/task.php',
                         type: 'DELETE',
                         contentType: 'application/json',
+                        data: JSON.stringify({
+                            taskId,
+                            taskListId
+                        }),
                         success: function(response) {
                             alert('Tarea eliminada correctamente.');
                             loadTasks(taskListId); // Recargar las tareas de la lista activa
@@ -239,7 +243,7 @@ try {
             $('#taskList').change(function() {
                 const taskListId = $(this).val();
                 loadTasks(taskListId);
-                $('#orderedTaskContainer').attr('hidden', true);//
+                $('#orderedTaskContainer').attr('hidden', true); //Ocultamos la tabla de ordenación al cambiar de lista.
             });
 
             //Añadir Tareas:

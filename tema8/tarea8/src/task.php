@@ -79,8 +79,11 @@ try {
         }
         echo json_encode($response);
     } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {  //IMPLEMENTADO: Solicitud DELETE para eliminar una tarea:
-        $taskId = $_GET['taskId'] ?? null;
-        $taskListId = $_GET['taskListId'] ?? null;
+        $input = json_decode(file_get_contents('php://input'), true);
+
+        // Extraer parámetros del cuerpo
+        $taskId = $input['taskId'] ?? null;
+        $taskListId = $input['taskListId'] ?? null;
 
         if (!$taskId || !$taskListId) {
             throw new Exception('Faltan parámetros obligatorios: taskId o taskListId.');

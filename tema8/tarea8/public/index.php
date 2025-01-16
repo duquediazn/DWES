@@ -3,6 +3,8 @@ require_once '../vendor/autoload.php';
 
 session_start();
 
+$redirectUri = "http://localhost/DWES/tema8/tarea8/public/";
+
 try {
     // Configuración del cliente de Google
     $client = new Google\Client();
@@ -11,7 +13,7 @@ try {
     $client->setAuthConfig('../client_secret.json');
     $client->setAccessType('offline');
     $client->setPrompt('select_account consent');
-    $client->setRedirectUri('http://localhost/DWES/tema8/tarea8/public/'); // URI de redirección
+    $client->setRedirectUri($redirectUri); // URI de redirección
 
     // Ruta del token
     $tokenPath = '../token.json';
@@ -200,7 +202,7 @@ try {
                 });
             }
 
-            //Actualizar una tarea de una lista: 
+            //IMPLEMENTADO: Actualizar una tarea de una lista: 
             $(document).on('click', '.editTask', function() {
                 const taskId = $(this).data('id'); // Obtener el taskId
                 const listId = $('#taskList').val(); // Obtener el ID de la lista activa
@@ -237,7 +239,7 @@ try {
             $('#taskList').change(function() {
                 const taskListId = $(this).val();
                 loadTasks(taskListId);
-                $('#orderedTaskContainer').attr('hidden', true);
+                $('#orderedTaskContainer').attr('hidden', true);//
             });
 
             //Añadir Tareas:
@@ -350,7 +352,7 @@ try {
                 }
                 if (confirm('¿Estás seguro de que deseas borrar esta lista?')) {
                     $.ajax({
-                        url: `http://localhost/DWES/tema8/tarea8/src/tasklist.php?listId=${taskListId}`,
+                        url: `../src/tasklist.php?listId=${taskListId}`,
                         type: 'DELETE',
                         success: function() {
                             alert('Lista borrada correctamente.');

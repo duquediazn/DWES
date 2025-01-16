@@ -1,0 +1,19 @@
+{
+    "name": "biblioteca/project",
+    "description": "Proyecto de gestión de una biblioteca con PHP y SOAP",
+    "type": "project",
+    "require": {
+        "monolog/monolog": "^2.0"
+    
+    },
+    "autoload": {
+        "psr-4": {
+            "Biblioteca\\": "src/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
